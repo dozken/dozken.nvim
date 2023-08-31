@@ -1,42 +1,3 @@
---[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-
-Kickstart.nvim is *not* a distribution.
-
-Kickstart.nvim is a template for your own configuration.
-  The goal is that you can read every line of code, top-to-bottom, understand
-  what your configuration is doing, and modify it to suit your needs.
-
-  Once you've done that, you should start exploring, configuring and tinkering to
-  explore Neovim!
-
-  If you don't know anything about Lua, I recommend taking some time to read through
-  a guide. One possible example:
-  - https://learnxinyminutes.com/docs/lua/
-
-
-  And then you can explore or search through `:help lua-guide`
-  - https://neovim.io/doc/user/lua-guide.html
-
-
-Kickstart Guide:
-
-I have left several `:help X` comments throughout the init.lua
-You should run that command and read that help section for more information.
-
-In addition, I have some `NOTE:` items throughout the file.
-These are for you, the reader to help understand what is happening. Feel free to delete
-them once you know what you're doing, but they should serve as a guide for when you
-are first encountering a few different constructs in your nvim config.
-
-I hope you enjoy your Neovim journey,
-- TJ
-
-P.S. You can delete this when you're done too. It's your config now :)
---]]
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
@@ -86,11 +47,77 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
     },
+    config = function()
+      -- Switch for controlling whether you want autoformatting.
+      --  Use :KickstartFormatToggle to toggle autoformatting on or off
+      local format_is_enabled = true
+      vim.api.nvim_create_user_command('KickstartFormatToggle', function()
+        format_is_enabled = not format_is_enabled
+        print('Setting autoformatting to: ' .. tostring(format_is_enabled))
+      end, {})
+
+      -- Create an augroup that is used for managing our formatting autocmds.
+      --      We need one augroup per client to make sure that multiple clients
+      --      can attach to the same buffer without interfering with each other.
+      local _augroups = {}
+      local get_augroup = function(client)
+        if not _augroups[client.id] then
+          local group_name = 'kickstart-lsp-format-' .. client.name
+          local id = vim.api.nvim_create_augroup(group_name, { clear = true })
+          _augroups[client.id] = id
+        end
+
+        return _augroups[client.id]
+      end
+
+      -- Whenever an LSP attaches to a buffer, we will run this function.
+      --
+      -- See `:help LspAttach` for more information about this autocmd event.
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('kickstart-lsp-attach-format', { clear = true }),
+        -- This is where we attach the autoformatting for reasonable clients
+        callback = function(args)
+          local client_id = args.data.client_id
+          local client = vim.lsp.get_client_by_id(client_id)
+          local bufnr = args.buf
+
+          -- Only attach to clients that support document formatting
+          if not client.server_capabilities.documentFormattingProvider then
+            return
+          end
+
+          -- Tsserver usually works poorly. Sorry you work with bad languages
+          -- You can remove this line if you know what you're doing :)
+          if client.name == 'tsserver' then
+            return
+          end
+
+          -- Create an autocmd that will run *before* we save the buffer.
+          --  Run the formatting command for the LSP that has just attached.
+          vim.api.nvim_create_autocmd('BufWritePre', {
+            group = get_augroup(client),
+            buffer = bufnr,
+            callback = function()
+              if not format_is_enabled then
+                return
+              end
+
+              vim.lsp.buf.format {
+                async = false,
+                filter = function(c)
+                  return c.id == client.id
+                end,
+              }
+            end,
+          })
+        end,
+      })
+    end,
   },
 
   {
@@ -110,7 +137,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -124,7 +151,8 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
+          { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
         vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
         vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
       end,
@@ -172,6 +200,30 @@ require('lazy').setup({
   {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
+
+    opts = {
+      defaults = {
+        mappings = {
+          i = {
+            ['<C-u>'] = false,
+            ['<C-d>'] = false,
+          },
+        },
+      },
+    },
+    keys = {
+      -- {"<leader>fp",        function() require("telescope.builtin").find_files({ cwd = require("lazy.core.config").options.root }) end,    desc = "Find Plugin File",},
+      -- See `:help telescope.builtin`
+      { '<leader>?',       "<cmd>Telescope oldfiles<cr>",                  desc = '[?] Find recently opened files' },
+      { '<leader><space>', "<cmd>Telescope buffers<cr>",                   desc = '[ ] Find existing buffers' },
+      { '<leader>/',       "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = '[/] Fuzzily search in current buffer' },
+      { '<leader>gf',      "<cmd>Telescope git_files<cr>",                 desc = 'Search [G]it [F]iles' },
+      { '<leader>sf',      "<cmd>Telescope find_files<cr>",                desc = '[S]earch [F]iles' },
+      { '<leader>sh',      "<cmd>Telescope help_tags<cr>",                 desc = '[S]earch [H]elp' },
+      { '<leader>sw',      "<cmd>Telescope grep_string<cr>",               desc = '[S]earch current [W]ord' },
+      { '<leader>sg',      "<cmd>Telescope live_grep<cr>",                 desc = '[S]earch by [G]rep' },
+      { '<leader>sd',      "<cmd>Telescope diagnostics<cr>",               desc = '[S]earch [D]iagnostics' },
+    },
     dependencies = {
       'nvim-lua/plenary.nvim',
       -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -184,6 +236,9 @@ require('lazy').setup({
         build = 'make',
         cond = function()
           return vim.fn.executable 'make' == 1
+        end,
+        config = function()
+          require("telescope").load_extension("fzf")
         end,
       },
     },
@@ -222,6 +277,7 @@ vim.o.hlsearch = false
 
 -- Make line numbers default
 vim.wo.number = true
+vim.wo.relativenumber = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
@@ -277,37 +333,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
-require('telescope').setup {
-  defaults = {
-    mappings = {
-      i = {
-        ['<C-u>'] = false,
-        ['<C-d>'] = false,
-      },
-    },
-  },
-}
 
 -- Enable telescope fzf native, if installed
-pcall(require('telescope').load_extension, 'fzf')
+-- pcall(require('telescope').load_extension, 'fzf')
 
--- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<leader>/', function()
-  -- You can pass additional configuration to telescope to change theme, layout, etc.
-  require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    winblend = 10,
-    previewer = false,
-  })
-end, { desc = '[/] Fuzzily search in current buffer' })
-
-vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -472,7 +501,7 @@ mason_lspconfig.setup_handlers {
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
     }
-  end
+  end,
 }
 
 -- [[ Configure nvim-cmp ]]
