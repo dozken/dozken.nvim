@@ -26,20 +26,62 @@ vim.opt.rtp:prepend(lazypath)
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
-  -- NOTE: First, some plugins that don't require any configuration
+  checker = { enabled = true }, -- automatically check for plugin updates
+  performance = {
+    rtp = {
+      -- disable some rtp plugins
+      disabled_plugins = {
+        "gzip",
+        -- "matchit",
+        -- "matchparen",
+        -- "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
+  { import = "plugins" },
+  {
+    -- Theme inspired by Atom
+    'navarasu/onedark.nvim',
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme 'onedark'
+    end,
+  },
+
+  {
+    -- Set lualine as statusline
+    'nvim-lualine/lualine.nvim',
+    event = "VeryLazy",
+    opts = {
+      options = {
+        icons_enabled = false,
+        theme = 'onedark',
+        component_separators = '|',
+        section_separators = '',
+      },
+    },
+  },
 
   -- Git related plugins
-  'tpope/vim-fugitive',
-  'tpope/vim-rhubarb',
+  {
+    'tpope/vim-fugitive',
+    cmd = 'Git'
+  },
+  -- 'tpope/vim-rhubarb',
 
   -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
+  -- 'tpope/vim-sleuth',
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
       { 'williamboman/mason.nvim', config = true },
@@ -47,7 +89,12 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
+      {
+        'j-hui/fidget.nvim',
+        tag = 'legacy',
+        event = "LspAttach",
+        opts = {}
+      },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       { "folke/neodev.nvim",       opts = {} },
@@ -123,6 +170,7 @@ require('lazy').setup({
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
+    event = "InsertEnter",
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
       'L3MON4D3/LuaSnip',
@@ -177,10 +225,11 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {} },
+  { 'folke/which-key.nvim', event = 'VeryLazy', opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
+    enabled = false,
     opts = {
       -- See `:help gitsigns.txt`
       signs = {
@@ -199,34 +248,11 @@ require('lazy').setup({
     },
   },
 
-  {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
-    priority = 1000,
-    config = function()
-      vim.cmd.colorscheme 'onedark'
-    end,
-  },
-
-  {
-    -- Set lualine as statusline
-    'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
-    opts = {
-      options = {
-        icons_enabled = false,
-        theme = 'onedark',
-        component_separators = '|',
-        section_separators = '',
-      },
-    },
-  },
 
   {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       char = '┊',
       show_trailing_blankline_indent = false,
@@ -234,13 +260,17 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  {
+    'numToStr/Comment.nvim',
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {}
+  },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
     'nvim-telescope/telescope.nvim',
+    cmd = "Telescope",
     branch = '0.1.x',
-
     opts = {
       defaults = {
         mappings = {
@@ -287,8 +317,15 @@ require('lazy').setup({
   {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    event = { "BufReadPost", "BufNewFile" },
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
+    },
+    cmd = { "TSUpdateSync" },
+    keys = {
+      { "<c-space>", desc = "Increment selection" },
+      { "<bs>",      desc = "Decrement selection", mode = "x" },
     },
     opts = {
       -- Add languages to be installed here that you want installed for treesitter
@@ -353,7 +390,6 @@ require('lazy').setup({
         },
       },
     },
-    build = ':TSUpdate',
   },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -418,6 +454,7 @@ vim.o.termguicolors = true
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+vim.keymap.set('n', '<leader>l', '<cmd>Lazy<cr>', { silent = true })
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
