@@ -31,22 +31,21 @@ require('lazy').setup({
   spec = {
     {
       'folke/tokyonight.nvim',
-      lazy = true,
-      -- lazy = false,
-      -- priority = 1000,
-      opts = { style = 'moon' },
-      -- config = function()
-      --   vim.cmd.colorscheme 'tokyonight-moon'
-      -- end,
-    },
-    {
-      'morhetz/gruvbox',
       lazy = false,
       priority = 1000,
+      opts = { style = 'moon' },
       config = function()
-        vim.cmd.colorscheme 'gruvbox'
-      end
+        vim.cmd.colorscheme 'tokyonight-moon'
+      end,
     },
+    -- {
+    --   'morhetz/gruvbox',
+    --   lazy = false,
+    --   priority = 1000,
+    --   config = function()
+    --     vim.cmd.colorscheme 'gruvbox'
+    --   end
+    -- },
 
     {
       -- Set lualine as statusline
@@ -199,6 +198,9 @@ vim.o.completeopt = 'menuone,noselect'
 vim.o.termguicolors = true
 
 vim.opt.expandtab = true -- Use spaces instead of tabs
+vim.opt.guicursor = ""
+
+
 -- [[ Basic Keymaps ]]
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
