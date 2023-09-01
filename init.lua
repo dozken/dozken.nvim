@@ -30,13 +30,22 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   spec = {
     {
-      "folke/tokyonight.nvim",
+      'folke/tokyonight.nvim',
+      lazy = true,
+      -- lazy = false,
+      -- priority = 1000,
+      opts = { style = 'moon' },
+      -- config = function()
+      --   vim.cmd.colorscheme 'tokyonight-moon'
+      -- end,
+    },
+    {
+      'morhetz/gruvbox',
       lazy = false,
       priority = 1000,
-      opts = {},
       config = function()
-        vim.cmd.colorscheme 'tokyonight-moon'
-      end,
+        vim.cmd.colorscheme 'gruvbox'
+      end
     },
 
     {
@@ -53,7 +62,17 @@ require('lazy').setup({
       },
     },
 
-    { 'folke/which-key.nvim', event = 'VeryLazy', opts = {} },
+    { 'folke/which-key.nvim', event = 'VeryLazy',                                                 opts = {} },
+    { 'folke/zen-mode.nvim',  keys = { { '<leader>zz', '<cmd>ZenMode<cr>', desc = 'Zen Mode' } }, opts = {} },
+
+    -- fun
+    {
+      'eandrju/cellular-automaton.nvim',
+      keys = {
+        { '<leader>mr',  '<cmd>CellularAutomaton make_it_rain<cr>', desc = 'Make It Rain' },
+        { '<leader>gol', '<cmd>CellularAutomaton game_of_life<cr>', desc = 'Make It Rain' }
+      }
+    },
 
     {
       -- Add indentation guides even on blank lines
@@ -115,6 +134,7 @@ require('lazy').setup({
       },
     },
 
+    { 'mbbill/undotree', keys = { { '<leader>u', '<cmd>UndotreeToggle<cr>', desc = 'Undotree' } } },
     { import = "plugins" },
   },
   install = { colorscheme = { "tokyonight", "habamax" } },
@@ -169,7 +189,7 @@ vim.o.smartcase = true
 vim.wo.signcolumn = 'yes'
 
 -- Decrease update time
-vim.o.updatetime = 250
+vim.o.updatetime = 200
 vim.o.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
@@ -178,6 +198,7 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
+vim.opt.expandtab = true -- Use spaces instead of tabs
 -- [[ Basic Keymaps ]]
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
