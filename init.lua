@@ -5,7 +5,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 -- unbind <C-e> from line scroll for 'harpoon'
 vim.api.nvim_set_keymap('n', '<C-e>', '', {})
--- vim.keymap.del('n', '<C-e>')
+
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -22,11 +22,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- NOTE: Here is where you install your plugins.
---  You can configure plugins using the `config` key.
---
---  You can also configure plugins after the setup call,
---    as they will be available in your neovim runtime.
 require('lazy').setup({
   spec = {
     {
@@ -63,15 +58,6 @@ require('lazy').setup({
 
     { 'folke/which-key.nvim', event = 'VeryLazy',                                                 opts = {} },
     { 'folke/zen-mode.nvim',  keys = { { '<leader>zz', '<cmd>ZenMode<cr>', desc = 'Zen Mode' } }, opts = {} },
-
-    -- fun
-    {
-      'eandrju/cellular-automaton.nvim',
-      keys = {
-        { '<leader>mr',  '<cmd>CellularAutomaton make_it_rain<cr>', desc = 'Make It Rain' },
-        { '<leader>gol', '<cmd>CellularAutomaton game_of_life<cr>', desc = 'Make It Rain' }
-      }
-    },
 
     {
       -- Add indentation guides even on blank lines
@@ -133,12 +119,25 @@ require('lazy').setup({
       },
     },
 
-    { 'mbbill/undotree', keys = { { '<leader>u', '<cmd>UndotreeToggle<cr>', desc = 'Undotree' } } },
+    { 'mbbill/undotree', keys = { { '<leader>u', '<cmd>UndotreeToggle<cr>', mode = 'n', desc = 'Undotree' } } },
+
+    -- fun
+    {
+      'eandrju/cellular-automaton.nvim',
+      keys = {
+        { '<leader>mr',  '<cmd>CellularAutomaton make_it_rain<cr>', desc = 'Make It Rain' },
+        { '<leader>gol', '<cmd>CellularAutomaton game_of_life<cr>', desc = 'Make It Rain' }
+      }
+    },
+
     { import = "plugins" },
   },
-  install = { colorscheme = { "tokyonight", "habamax" } },
+  install = { colorscheme = { "tokyonight" } },
   checker = { enabled = true }, -- automatically check for plugin updates
   performance = {
+    cache = {
+      enabled = true,
+    },
     rtp = {
       -- disable some rtp plugins
       disabled_plugins = {
@@ -153,7 +152,7 @@ require('lazy').setup({
       },
     },
   },
-}, {})
+})
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
