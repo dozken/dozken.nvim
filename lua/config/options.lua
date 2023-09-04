@@ -27,6 +27,8 @@ vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
+vim.o.cursorline = true -- highlight the current cursor line
+
 -- Keep signcolumn on by default
 vim.wo.signcolumn = 'yes'
 
@@ -40,5 +42,8 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
-vim.opt.expandtab = true -- Use spaces instead of tabs
--- vim.opt.guicursor = ""
+-- tabs & indentation
+vim.o.tabstop = 2       -- 2 spaces for tabs (prettier default)
+vim.o.shiftwidth = 2    -- 2 spaces for indent width
+vim.o.expandtab = true  -- expand tab to spaces
+vim.o.autoindent = true -- copy indent from current line when starting new one
