@@ -3,6 +3,7 @@ return {
 	'neovim/nvim-lspconfig',
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
+    "hrsh7th/cmp-nvim-lsp",
 		-- Automatically install LSPs to stdpath for neovim
 		{ 'williamboman/mason.nvim', config = true },
 		'williamboman/mason-lspconfig.nvim',
