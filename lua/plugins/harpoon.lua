@@ -1,64 +1,26 @@
 return {
-	'ThePrimeagen/harpoon',
-	keys = {
-		{
-			'<C-e>',
-			function()
-				require('harpoon.ui').toggle_quick_menu()
-			end,
-			desc = 'Open Harpoon',
-		},
-		{
-			'<leader>a',
-			function()
-				require('harpoon.mark').add_file()
-			end,
-			desc = 'Mark for Harpoon'
-		},
+        'ThePrimeagen/harpoon',
+        keys = function()
+                local map = function(key, func, desc)
+                        return {
+                                key,
+                                func,
+                                desc = 'Harpoon ' .. desc
 
-		-- Harpoon marked files 1 through 4.
-		{
-			'<C-j>',
-			function()
-				require('harpoon.ui').nav_file(1)
-			end,
-			desc = 'Harpoon 1'
-		},
-		{
-			'<C-k>',
-			function()
-				require('harpoon.ui').nav_file(2)
-			end,
-			desc = 'Harpoon 2'
-		},
-		{
-			'<C-l>',
-			function()
-				require('harpoon.ui').nav_file(3)
-			end,
-			desc = 'Harpoon 3'
-		},
-		{
-			'<C-;>',
-			function()
-				require('harpoon.ui').nav_file(4)
-			end,
-			desc = 'Harpoon 4'
-		},
-		-- Harpoon next & prev
-		{
-			'<A-n>',
-			function()
-				require('harpoon.ui').nav_next()
-			end,
-			desc = 'Harpoon next'
-		},
-		{
-			'<A-p>',
-			function()
-				require('harpoon.ui').nav_next()
-			end,
-			desc = 'Harpoon next'
-		},
-	},
+                        }
+                end
+                return {
+                        map('<leader>hu', require('harpoon.ui').toggle_quick_menu, 'UI'),
+                        map('<leader>hm', require('harpoon.mark').add_file, 'Mark for Harpoon'),
+                        map('<C-j>', function() require('harpoon.ui').nav_file(1) end, '1'),
+                        map('<C-k>', function() require('harpoon.ui').nav_file(2) end, '2'),
+                        map('<C-l>', function() require('harpoon.ui').nav_file(3) end, '3'),
+                        map('<C-;>', function() require('harpoon.ui').nav_file(4) end, '4'),
+                        map('<leader>hp', require('harpoon.ui').nav_prev, 'prev'),
+                        map('<leader>hn', require('harpoon.ui').nav_next, 'next'),
+                }
+        end,
+        dependencies = {
+                "nvim-lua/plenary.nvim",
+        },
 }
