@@ -3,8 +3,6 @@
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
--- unbind <C-e> from line scroll for 'harpoon'
-vim.api.nvim_set_keymap('n', '<C-e>', '', {})
 
 -- [[ Basic Keymaps ]]
 -- Keymaps for better default experience
@@ -27,11 +25,11 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
-        callback = function()
-                vim.highlight.on_yank()
-        end,
-        group = highlight_group,
-        pattern = '*',
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+  group = highlight_group,
+  pattern = '*',
 })
 
 -- Diagnostic keymaps

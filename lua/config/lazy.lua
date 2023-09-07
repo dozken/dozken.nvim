@@ -10,21 +10,13 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
   spec = {
-    -- "gc" to comment visual regions/lines
-    {
-      'echasnovski/mini.comment',
-      event = { "BufReadPost", "BufNewFile" },
-      opts = {}
-    },
-
     { import = "plugins" },
   },
-  defaults = { lazy = true },
   install = { colorscheme = { "tokyonight" } },
   checker = { enabled = true }, -- automatically check for plugin updates
   performance = {
     cache = {
-      enabled = true,
+      enabled = true
     },
     rtp = {
       -- disable some rtp plugins
