@@ -1,31 +1,23 @@
 return {
   'ThePrimeagen/harpoon',
+  events = 'VeryLazy',
+  keys = {
+    { '<leader>hm', '<cmd>Telescope harpoon marks<cr>',                desc = '[H]arpoon [M]arks' },
+    { '<leader>ha', '<cmd>lua require("harpoon.mark").add_file()<cr>', desc = '[H]arpoon [A]dd file' },
+    { '<leader>h1', '<cmd>lua require("harpoon.ui").nav_file(1)<cr>',  desc = '[H]arpoon [1]' },
+    { '<leader>h2', '<cmd>lua require("harpoon.ui").nav_file(2)<cr>',  desc = '[H]arpoon [2]' },
+    { '<leader>h3', '<cmd>lua require("harpoon.ui").nav_file(3)<cr>',  desc = '[H]arpoon [3]' },
+    { '<leader>h4', '<cmd>lua require("harpoon.ui").nav_file(4)<cr>',  desc = '[H]arpoon [4]' },
+    { '<leader>hp', '<cmd>lua require("harpoon.ui").nav_prev()<cr>',   desc = '[H]arpoon [P]rev' },
+    { '<leader>hn', '<cmd>lua require("harpoon.ui").nav_next()<cr>',   desc = '[H]arpoon [N]ext' }
+  },
   dependencies = {
     'nvim-lua/plenary.nvim',
-    'nvim-telescope/telescope.nvim',
-  },
-  events = 'VeryLazy',
-  keys = function()
-    local map = function(key, func, desc)
-      return {
-        key,
-        func,
-        desc = '[H]arpoon ' .. desc
-
-      }
-    end
-    return {
-      map('<leader>hm', '<cmd>Telescope harpoon marks<cr>', '[M]arks'),
-      map('<leader>ha', function() require('harpoon.mark').add_file() end, '[A]dd file'),
-      map('<leader>h1', function() require('harpoon.ui').nav_file(1) end, '[1]'),
-      map('<leader>h2', function() require('harpoon.ui').nav_file(2) end, '[2]'),
-      map('<leader>h3', function() require('harpoon.ui').nav_file(3) end, '[3]'),
-      map('<leader>h4', function() require('harpoon.ui').nav_file(4) end, '[4]'),
-      map('<leader>hp', function() require('harpoon.ui').nav_prev() end, '[P]rev'),
-      map('<leader>hn', function() require('harpoon.ui').nav_next() end, '[N]ext'),
+    {
+      'nvim-telescope/telescope.nvim',
+      config = function()
+        require('telescope').load_extension('harpoon')
+      end
     }
-  end,
-  config = function()
-    require('telescope').load_extension('harpoon')
-  end
+  },
 }
