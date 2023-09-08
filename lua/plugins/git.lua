@@ -5,10 +5,8 @@ return {
     keys = {
       {
         "<leader>gw",
-        function()
-          require("telescope").extensions.git_worktree.git_worktrees()
-        end,
-        desc = "Git Worktree",
+        '<CMD>lua require("telescope").extensions.git_worktree.git_worktrees()<CR>',
+        desc = "[G]it [W]orktree"
       },
     },
     dependencies = {
@@ -70,7 +68,7 @@ return {
   {
     'mbbill/undotree',
     keys = {
-      { '<leader>u', '<cmd>UndotreeToggle<cr>', mode = 'n', desc = 'Undotree' } }
+      { '<leader>u', '<cmd>UndotreeToggle<cr>', mode = 'n', desc = '[U]ndotree' } }
   },
 
 }
