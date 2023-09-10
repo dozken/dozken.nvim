@@ -3,8 +3,8 @@ return {
     "catppuccin/nvim",
     name = "catppuccin",
     lazy = true,
-    event = { "VimEnter" },
-    priority = 10000,
+    -- event = { "VimEnter" },
+    -- priority = 10000,
     config = function()
       vim.cmd.colorscheme 'catppuccin-mocha'
     end,
@@ -24,8 +24,8 @@ return {
     'rose-pine/neovim',
     name = 'rose-pine',
     lazy = true,
-    -- event = { "VimEnter" },
-    -- priority = 10000,
+    event = { "VimEnter" },
+    priority = 10000,
     config = function()
       vim.cmd.colorscheme 'rose-pine-moon'
     end,
