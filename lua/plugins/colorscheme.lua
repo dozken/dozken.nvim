@@ -4,7 +4,7 @@ return {
     name = "catppuccin",
     lazy = true,
     -- event = { "VimEnter" },
-    -- priority = 10000,
+    -- priority = 1000,
     config = function()
       vim.cmd.colorscheme 'catppuccin-mocha'
     end,
@@ -13,7 +13,7 @@ return {
     'folke/tokyonight.nvim',
     lazy = true,
     -- event = { "VimEnter" },
-    -- priority = 10000,
+    -- priority = 1000,
     opts = { style = 'moon' },
     config = function()
       vim.cmd.colorscheme 'tokyonight-moon'
@@ -23,11 +23,12 @@ return {
   {
     'rose-pine/neovim',
     name = 'rose-pine',
-    lazy = true,
-    event = { "VimEnter" },
-    priority = 10000,
+    lazy = false,
+    -- event = { "VimEnter" },
+    priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'rose-pine'
+      -- vim.cmd.colorscheme 'rose-pine'
+      vim.cmd([[colorscheme rose-pine]])
     end,
   },
 }

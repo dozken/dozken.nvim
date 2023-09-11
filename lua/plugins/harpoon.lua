@@ -1,6 +1,6 @@
 return {
   'ThePrimeagen/harpoon',
-  events = 'VeryLazy',
+  -- event = 'VeryLazy',
   keys = {
     { '<leader>hm', '<cmd>Telescope harpoon marks<cr>',                desc = '[H]arpoon [M]arks' },
     { '<leader>ha', '<cmd>lua require("harpoon.mark").add_file()<cr>', desc = '[H]arpoon [A]dd file' },

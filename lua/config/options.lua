@@ -4,6 +4,7 @@
 
 -- Enable auto write
 vim.opt.autowrite = true
+vim.opt.confirm = true
 
 -- Set highlight on search
 vim.o.hlsearch = false

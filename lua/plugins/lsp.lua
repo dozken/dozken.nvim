@@ -1,4 +1,3 @@
-      -- require('config.keymaps').mymap()
 -- Switch for controlling whether you want autoformatting.
 --  Use :KickstartFormatToggle to toggle autoformatting on or off
 local format_is_enabled = true
@@ -20,31 +19,6 @@ local get_augroup = function(client)
 
   return _augroups[client.id]
 end
-
--- [[ Configure LSP ]]
--- Enable the following language servers
---  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
---
---  Add any additional override configuration in the following tables. They will be passed to
---  the `settings` field of the server config. You must look up that documentation yourself.
---
---  If you want to override the default filetypes that your language server will attach to you can
---  define the property 'filetypes' to the map in question.
-local servers = {
-  -- clangd = {},
-  -- gopls = {},
-  -- pyright = {},
-  -- rust_analyzer = {},
-  tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
-  lua_ls = {
-    Lua = {
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
-    },
-  },
-}
 
 -- Whenever an LSP attaches to a buffer, we will run this function.
 --
@@ -109,11 +83,10 @@ local on_attach = function(_, bufnr)
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-  -- nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-  nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+  nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
@@ -154,9 +127,52 @@ return {
       -- Additional lua configuration, makes nvim stuff amazing!
       { 'folke/neodev.nvim',                opts = {} },
     },
-    config = function()
-      -- Setup neovim lua configuration
-      -- require('neodev').setup()
+    opts = {
+      servers = {
+        -- clangd = {},
+        -- gopls = {},
+        -- pyright = {},
+        rust_analyzer = {},
+        tsserver = {
+          keys = {
+            { "<leader>co", "<cmd>TypescriptOrganizeImports<CR>", desc = "Organize Imports" },
+            { "<leader>cR", "<cmd>TypescriptRenameFile<CR>",      desc = "Rename File" },
+          },
+          settings = {
+            typescript = {
+              format = {
+                indentSize = vim.o.shiftwidth,
+                convertTabsToSpaces = vim.o.expandtab,
+                tabSize = vim.o.tabstop,
+              },
+            },
+            javascript = {
+              format = {
+                indentSize = vim.o.shiftwidth,
+                convertTabsToSpaces = vim.o.expandtab,
+                tabSize = vim.o.tabstop,
+              },
+            },
+            completions = {
+              completeFunctionCalls = true,
+            },
+          },
+        },
+        vtsls = {},
+        biome = {},
+        -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+
+        lua_ls = {
+          Lua = {
+            workspace = { checkThirdParty = false },
+            telemetry = { enable = false },
+          },
+        },
+      }
+
+    },
+    config = function(_, opts)
+      local servers = opts.servers
 
       -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -179,7 +195,6 @@ return {
           }
         end,
       }
-
     end,
   },
 }
