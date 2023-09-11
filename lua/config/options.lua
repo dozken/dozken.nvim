@@ -2,6 +2,9 @@
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 
+-- Enable auto write
+vim.opt.autowrite = true
+
 -- Set highlight on search
 vim.o.hlsearch = false
 
@@ -41,9 +44,17 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
+vim.o.showmode = false
 
 -- tabs & indentation
-vim.o.tabstop = 2       -- 2 spaces for tabs (prettier default)
-vim.o.shiftwidth = 2    -- 2 spaces for indent width
-vim.o.expandtab = true  -- expand tab to spaces
-vim.o.autoindent = true -- copy indent from current line when starting new one
+vim.o.tabstop = 2        -- 2 spaces for tabs (prettier default)
+vim.o.shiftwidth = 2     -- 2 spaces for indent width
+vim.o.expandtab = true   -- expand tab to spaces
+vim.o.autoindent = true  -- copy indent from current line when starting new one
+vim.o.smartindent = true -- Insert indents automatically
+
+-- Fix markdown indentation settings
+vim.g.markdown_recommended_style = 0
+
+-- vim.opt.splitkeep = "sceen"
+-- vim.opt.shortmess:append({ C = true })
