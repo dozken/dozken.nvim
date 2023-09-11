@@ -8,6 +8,11 @@ return {
         '<CMD>lua require("telescope").extensions.git_worktree.git_worktrees()<CR>',
         desc = "[G]it [W]orktree"
       },
+      {
+        "<leader>gW",
+        "<CMD>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>",
+        desc = "Git Worktree Create",
+      },
     },
     dependencies = {
       "nvim-telescope/telescope.nvim",
