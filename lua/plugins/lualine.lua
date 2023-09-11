@@ -1,6 +1,6 @@
 return {
   'nvim-lualine/lualine.nvim',
-  event = "VeryLazy",
+  event = "VimEnter",
   opts = {
     sections = {
       lualine_b = { 'branch', 'diff', 'diagnostics' },
