@@ -33,7 +33,7 @@ vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = 'Copy line to clipboard' })
 vim.keymap.set("x", "<leader>p", [["_dP]], { desc = 'Replace with clipboard' })
 
 -- Execute Ex commands using <leader>pv in normal mode
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Ex" })
 
 -- Remap k and j in normal mode to handle word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
