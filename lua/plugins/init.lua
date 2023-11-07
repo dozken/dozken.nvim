@@ -9,13 +9,13 @@ return {
     },
   },
 
-  -- fun
-  {
-    'eandrju/cellular-automaton.nvim',
-    keys = {
-      { '<leader>mr',  '<cmd>CellularAutomaton make_it_rain<cr>', desc = 'Make It Rain' },
-      { '<leader>gol', '<cmd>CellularAutomaton game_of_life<cr>', desc = 'Game Of Life' }
-    }
-  },
+  -- -- fun
+  -- {
+  --   'eandrju/cellular-automaton.nvim',
+  --   keys = {
+  --     { '<leader>mr',  '<cmd>CellularAutomaton make_it_rain<cr>', desc = 'Make It Rain' },
+  --     { '<leader>gol', '<cmd>CellularAutomaton game_of_life<cr>', desc = 'Game Of Life' }
+  --   }
+  -- },
 
 }

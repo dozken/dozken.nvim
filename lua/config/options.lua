@@ -15,6 +15,8 @@ vim.wo.relativenumber = true
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
+-- Enable auto write
+vim.o.autowrite = true
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.

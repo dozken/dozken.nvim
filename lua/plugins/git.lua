@@ -2,7 +2,7 @@ return {
   -- Git related plugins
   {
     "ThePrimeagen/git-worktree.nvim",
-    event = { "VimEnter" },
+    -- event = { "VimEnter" },
     keys = {
       {
         "<leader>gw",
