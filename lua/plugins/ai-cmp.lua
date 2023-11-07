@@ -2,7 +2,7 @@ return {
   -- TabNine
   {
     'tzachar/cmp-tabnine',
-    event = { "InsertEnter", "BufReadPre", "BufNewFile" },
+    event = { "InsertEnter" },
     build = './install.sh',
     dependencies = { 'hrsh7th/nvim-cmp',
       'onsails/lspkind.nvim'
@@ -30,7 +30,7 @@ return {
   -- Codeium
   {
     "Exafunction/codeium.nvim",
-    event = { "InsertEnter", "BufReadPre", "BufNewFile" },
+    event = { "InsertEnter" },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "hrsh7th/nvim-cmp",

@@ -23,7 +23,7 @@ require('lazy').setup({
   },
   install = {
     colorscheme = {
-      "rose-pine/neovim",
+      "rose-pine-main",
       -- "catppuccin",
       --  "tokyonight"
     }

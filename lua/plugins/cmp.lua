@@ -22,7 +22,7 @@ return {
     -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
     require("luasnip.loaders.from_vscode").lazy_load()
 
-    local compare = require("cmp.config.compare")
+    -- local compare = require("cmp.config.compare")
     ---@diagnostic disable-next-line: missing-fields
     cmp.setup {
       ---@diagnostic disable-next-line: missing-fields
