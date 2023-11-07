@@ -25,7 +25,7 @@ return {
 
   {
     'rose-pine/neovim',
-    -- event = { "VimEnter" },
+    event = { "VimEnter" },
     enabled = true,
     name = 'rose-pine',
     lazy = false,
