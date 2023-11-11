@@ -1,5 +1,17 @@
 return {
   {
+    'echasnovski/mini.completion',
+    version = '*',
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    opts = {},
+  },
+  {
+    'echasnovski/mini.animate',
+    version = '*',
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    opts = {}
+  },
+  {
     'echasnovski/mini.comment',
     version = '*',
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },

@@ -2,6 +2,8 @@
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 
+vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
+
 -- Enable auto write
 vim.opt.autowrite = true
 vim.opt.confirm = true
@@ -13,14 +15,14 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 
 -- Enable mouse mode
-vim.o.mouse = 'a'
+vim.o.mouse = "a"
 -- Enable auto write
 vim.o.autowrite = true
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
-vim.o.clipboard = 'unnamedplus'
+--  See `:help "clipboard"`
+vim.o.clipboard = "unnamedplus"
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -35,7 +37,7 @@ vim.o.smartcase = true
 vim.o.cursorline = true -- highlight the current cursor line
 
 -- Keep signcolumn on by default
-vim.wo.signcolumn = 'yes'
+vim.wo.signcolumn = "yes"
 
 -- Decrease update time
 -- vim.o.updatetime = 200
@@ -43,7 +45,7 @@ vim.o.updatetime = 50
 vim.o.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
+vim.o.completeopt = "menuone,noselect"
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
