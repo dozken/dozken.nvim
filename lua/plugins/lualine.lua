@@ -1,19 +1,6 @@
 return {
-  {
-    'echasnovski/mini.statusline',
-    enabled = false,
-    event = "VimEnter",
-    version = '*',
-    opt = {},
-    config = function()
-      require('mini.statusline').setup()
-    end
-  },
-  {
     'nvim-lualine/lualine.nvim',
-    -- enabled = false,
-    -- event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    event = "VimEnter",
+    event = "UIEnter",
     init = function()
       vim.opt.shortmess:append({ W = true, I = false, c = true })
     end,
@@ -34,9 +21,8 @@ return {
         },
       },
       options = {
-        section_separators = ""
-        -- { left = '', right = '' },
+        component_separators = '|',
+        section_separators = '',
       }
-    },
-  }
+    }
 }

@@ -83,7 +83,7 @@ return {
       { '<leader>gg', '<cmd>LazyGit<cr>', desc = 'LazyGit' },
     },
     cmd = 'LazyGit',
-    --   -- optional for floating window border decoration
+    -- optional for floating window border decoration
     dependencies = {
       'nvim-lua/plenary.nvim',
     },

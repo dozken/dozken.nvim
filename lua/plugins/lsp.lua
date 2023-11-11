@@ -159,7 +159,7 @@ return {
             },
           },
         },
-        vtsls = {},
+        -- vtsls = {},
         biome = {},
         -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 

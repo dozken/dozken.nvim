@@ -12,6 +12,7 @@ return {
       },
     },
   },
+  event = "UIEnter",
   keys = {
     -- {'<leader>fp',        function() require('telescope.builtin').find_files({ cwd = require('lazy.core.config').options.root }) end,    desc = 'Find Plugin File',},
     -- See `:help telescope.builtin`
@@ -24,7 +25,7 @@ return {
     { '<leader>sw',      '<cmd>Telescope grep_string<cr>',               desc = '[S]earch current [W]ord' },
     { '<leader>sg',      '<cmd>Telescope live_grep<cr>',                 desc = '[S]earch by [G]rep' },
     { '<leader>sd',      '<cmd>Telescope diagnostics<cr>',               desc = '[S]earch [D]iagnostics' },
-    { '<leader>sr',      '<cmd>Telescope .resume',                       desc = '[S]earch [R]resume' },
+    { '<leader>sr',      '<cmd>Telescope resume<cr>',                       desc = '[S]earch [R]esume' },
   },
   dependencies = {
     'nvim-lua/plenary.nvim',
@@ -44,4 +45,6 @@ return {
       end,
     },
   },
+  config = function()
+  end
 }

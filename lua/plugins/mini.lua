@@ -1,16 +1,20 @@
 return {
-  -- "gc" to comment visual regions/lines
   {
     'echasnovski/mini.comment',
-    -- event = { "BufReadPost", "BufNewFile" },
+    version = '*',
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    opts = {}
+  },
+  {
+    'echasnovski/mini.pairs',
+    version = '*',
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {}
   },
   {
     "echasnovski/mini.indentscope",
-    version = false, -- wait till new 0.7.0 release to put it back on semver
+    version = '*',
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    -- event = { "BufReadPre", "BufNewFile" },
     opts = {
       -- symbol = "▏",
       symbol = "│",

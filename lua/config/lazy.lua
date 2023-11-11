@@ -23,12 +23,13 @@ require('lazy').setup({
   },
   install = {
     colorscheme = {
+      "habamax",
       "rose-pine-main",
       -- "catppuccin",
       --  "tokyonight"
     }
   },
-  checker = { enabled = true }, -- automatically check for plugin updates
+  checker = { enabled = false }, -- automatically check for plugin updates
   performance = {
     rtp = {
       -- disable some rtp plugins
