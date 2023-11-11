@@ -8,21 +8,21 @@ vim.g.maplocalleader = ' '
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-vim.keymap.set('n', '<leader>l', '<cmd>Lazy<cr>', { desc = 'Lazy' })
+vim.keymap.set('n', '<leader>l', '<cmd>Lazy<cr>', { desc = '[L]azy Home' })
 
 vim.keymap.set("i", "<C-c>", "<Esc>", { desc = 'Exit insert mode' })
 
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = 'Scroll & center down' })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = 'Scroll & center up' })
 
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = 'Copy to clipboard' })
-vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = 'Copy line to clipboard' })
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = '[Y]ank to clipboard' })
+vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = '[Y]ank line to clipboard' })
 vim.keymap.set("x", "<leader>p", [["_dP]], { desc = 'Replace with clipboard' })
-vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
+vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]], { desc = '[D]elete to void' })
 
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, { desc = '[F]ormat buffer' })
 
 -- Remap k and j in normal mode to handle word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
