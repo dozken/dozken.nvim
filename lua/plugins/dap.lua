@@ -7,7 +7,7 @@ return {
       'rcarriga/nvim-dap-ui',
       keys = {
         { "<leader>du", function() require("dapui").toggle({}) end, desc = "[D]ap [U]I" },
-        { "<leader>de", function() require("dapui").eval() end,     desc = "[D]ap [E]val",  mode = { "n", "v" } },
+        { "<leader>de", function() require("dapui").eval() end,     desc = "[D]ap [E]val", mode = { "n", "v" } },
       },
     },
 
