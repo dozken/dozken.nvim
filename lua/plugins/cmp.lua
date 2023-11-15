@@ -1,57 +1,81 @@
 return {
   "hrsh7th/nvim-cmp",
   event = "InsertEnter",
+  lazy = true,
   dependencies = {
-    "hrsh7th/cmp-buffer",           -- source for text in buffer
-    "hrsh7th/cmp-path",             -- source for file system paths
-    "L3MON4D3/LuaSnip",             -- snippet engine
+    "hrsh7th/cmp-buffer", -- source for text in buffer
+    "hrsh7th/cmp-path",   -- source for file system paths
+    "hrsh7th/cmp-nvim-lsp",
+    "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",     -- for autocompletion
     "rafamadriz/friendly-snippets", -- useful snippets
     "onsails/lspkind.nvim",         -- vs-code like pictograms
-    "hrsh7th/cmp-nvim-lsp",
   },
   config = function()
     vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
     local cmp = require "cmp"
 
     local luasnip = require "luasnip"
+    -- loads snippets from the luasnippents dir
+    require("luasnip.loaders.from_lua").load({ paths = "./luasnippets" })
+    -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
+    require("luasnip.loaders.from_vscode").lazy_load()
+    luasnip.config.setup {}
+
+
     local defaults = require("cmp.config.default")()
 
     local lspkind = require "lspkind"
 
-    -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
-    require("luasnip.loaders.from_vscode").lazy_load()
-
-    -- local compare = require("cmp.config.compare")
     ---@diagnostic disable-next-line: missing-fields
     cmp.setup {
       ---@diagnostic disable-next-line: missing-fields
       completion = {
-        -- completeopt = "menu,menuone,preview,noselect",
-        completeopt = "menu,menuone,noinsert",
+        completeopt = "menu,menuone,preview,noselect",
+        -- completeopt = "menu,menuone,noinsert",
       },
-      snippet = { -- configure how nvim-cmp interacts with snippet engine
+      snippet = {
+        -- configure how nvim-cmp interacts with snippet engine
         expand = function(args)
           luasnip.lsp_expand(args.body)
         end,
       },
       mapping = cmp.mapping.preset.insert {
-        ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
-        ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
-        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
-        ["<C-e>"] = cmp.mapping.abort(),        -- close completion window
-        ["<CR>"] = cmp.mapping.confirm {
+        ['<C-j>'] = cmp.mapping.select_next_item(),
+        ['<C-k>'] = cmp.mapping.select_prev_item(),
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete {},
+        ['<CR>'] = cmp.mapping.confirm {
           behavior = cmp.ConfirmBehavior.Replace,
           select = true,
         },
+        ['<C-l>'] = cmp.mapping(function(fallback)
+          -- if cmp.visible() then
+          -- cmp.select_next_item()
+          -- else
+          if luasnip.expand_or_locally_jumpable() then
+            luasnip.expand_or_jump()
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
+        ['<C-h>'] = cmp.mapping(function(fallback)
+          -- if cmp.visible() then
+          -- cmp.select_prev_item()
+          -- else
+          if luasnip.locally_jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
       },
       -- sources for autocompletion
       sources = cmp.config.sources {
-        { name = "nvim_lsp" },
         { name = "codeium" },
         { name = "cmp_tabnine" },
+        { name = "nvim_lsp" },
         { name = "luasnip" },
         { name = "nvim_lua" },
         { name = "buffer" },
@@ -72,7 +96,7 @@ return {
             nvim_lsp = "[LSP]",
             codeium = "[Codeium]",
             cmp_tabnine = "[TabNine]",
-            luasnip = "[LuaSnip]",
+            luasnip = "[Snips]",
             nvim_lua = "[Lua]",
             buffer = "[Buffer]",
             path = "[Path]",

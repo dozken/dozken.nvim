@@ -40,9 +40,8 @@ vim.o.cursorline = true -- highlight the current cursor line
 vim.wo.signcolumn = "yes"
 
 -- Decrease update time
--- vim.o.updatetime = 200
-vim.o.updatetime = 20
--- vim.o.timeoutlen = 300
+vim.o.updatetime = 200
+vim.o.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"
