@@ -14,7 +14,7 @@ return {
   -- {
   --   'folke/tokyonight.nvim',
   --   enabled = false,
-  --   lazy = false,
+  --   lazy = true,
   --   event = { "VimEnter" },
   --   priority = 1000,
   --   opts = { style = 'moon' },
@@ -28,7 +28,7 @@ return {
     event = { "VimEnter" },
     enabled = true,
     name = 'rose-pine',
-    lazy = false,
+    lazy = true,
     priority = 1000,
     config = function()
       vim.cmd.colorscheme 'rose-pine-main'

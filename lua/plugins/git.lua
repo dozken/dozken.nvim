@@ -19,6 +19,7 @@ return {
       "nvim-lua/plenary.nvim",
       {
         "nvim-telescope/telescope.nvim",
+        lazy = true,
         config = function()
           require("telescope").load_extension("git_worktree")
         end,

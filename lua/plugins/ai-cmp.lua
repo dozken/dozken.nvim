@@ -2,9 +2,11 @@ return {
   -- TabNine
   {
     'tzachar/cmp-tabnine',
+    lazy = true,
     event = { "InsertEnter" },
     build = './install.sh',
-    dependencies = { 'hrsh7th/nvim-cmp',
+    dependencies = {
+      'hrsh7th/nvim-cmp',
       'onsails/lspkind.nvim'
     },
     --write me a function
@@ -30,14 +32,14 @@ return {
   -- Codeium
   {
     "Exafunction/codeium.nvim",
+    lazy = true,
     event = { "InsertEnter" },
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
+      'hrsh7th/nvim-cmp',
+      'onsails/lspkind.nvim',
     },
     config = function()
-      require("codeium").setup({
-      })
+      require("codeium").setup({})
     end
   },
 }

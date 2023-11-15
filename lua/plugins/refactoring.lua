@@ -14,10 +14,13 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
-      "nvim-telescope/telescope.nvim",
+      {
+        "nvim-telescope/telescope.nvim",
+        lazy = true,
+        config = function()
+          require("telescope").load_extension("refactoring")
+        end
+      },
     },
-    config = function()
-      require("telescope").load_extension("refactoring")
-    end
   }
 }

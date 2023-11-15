@@ -14,9 +14,12 @@ return {
   },
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "nvim-telescope/telescope.nvim",
+    {
+      "nvim-telescope/telescope.nvim",
+      lazy = true,
+      config = function()
+        require("telescope").load_extension("harpoon")
+      end,
+    },
   },
-  config = function()
-    require("telescope").load_extension("harpoon")
-  end,
 }

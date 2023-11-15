@@ -13,6 +13,7 @@ return {
     },
   },
   event = "UIEnter",
+  -- lazy = true,
   keys = {
     -- {'<leader>fp',        function() require('telescope.builtin').find_files({ cwd = require('lazy.core.config').options.root }) end,    desc = 'Find Plugin File',},
     -- See `:help telescope.builtin`
@@ -40,6 +41,7 @@ return {
       cond = function()
         return vim.fn.executable 'make' == 1
       end,
+      lazy = true,
       config = function()
         require('telescope').load_extension('fzf')
       end,

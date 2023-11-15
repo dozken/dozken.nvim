@@ -1,14 +1,14 @@
 return {
+  -- {
+  --   'echasnovski/mini.completion',
+  --   version = '*',
+  --   event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+  --   opts = {},
+  -- },
   {
-    'echasnovski/mini.completion',
+    'echasnovski/mini.files',
     version = '*',
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    opts = {},
-  },
-  {
-    'echasnovski/mini.animate',
-    version = '*',
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = { "BufReadPost", "BufNewFile" },
     opts = {}
   },
   {

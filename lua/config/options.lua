@@ -2,7 +2,7 @@
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 
-vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
+-- vim.opt.guicursor = ""
 
 -- Enable auto write
 vim.opt.autowrite = true
@@ -41,8 +41,8 @@ vim.wo.signcolumn = "yes"
 
 -- Decrease update time
 -- vim.o.updatetime = 200
-vim.o.updatetime = 50
-vim.o.timeoutlen = 300
+vim.o.updatetime = 20
+-- vim.o.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = "menuone,noselect"
