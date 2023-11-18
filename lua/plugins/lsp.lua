@@ -127,6 +127,7 @@ return {
 
       -- Additional lua configuration, makes nvim stuff amazing!
       { 'folke/neodev.nvim',                opts = {} },
+
     },
     opts = {
       servers = {
@@ -160,7 +161,7 @@ return {
           },
         },
         -- vtsls = {},
-        biome = {},
+        -- biome = {},
         -- html = { filetypes = { 'html', 'twig', 'hbs'} },
 
         lua_ls = {

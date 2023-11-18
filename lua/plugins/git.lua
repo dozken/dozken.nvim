@@ -62,19 +62,19 @@ return {
         install_dependencies_job:start()
       end
 
-      Worktree.on_tree_change(function(op, metadata)
-        if op == Worktree.Operations.Create then
-          print("Created " .. metadata.path .. ' and ' .. vim.fn.getcwd())
-
-          if string.find(vim.fn.getcwd(), "msdirect") then
-            setup_msdirect_repos(vim.fn.getcwd(), metadata.path)
-          end
-        end
-
-        if op == Worktree.Operations.Switch then
-          print("Switch from " .. metadata.prev_path .. " to " .. metadata.path)
-        end
-      end)
+      -- Worktree.on_tree_change(function(op, metadata)
+      --   if op == Worktree.Operations.Create then
+      --     print("Created " .. metadata.path .. ' and ' .. vim.fn.getcwd())
+      --
+      --     if string.find(vim.fn.getcwd(), "msdirect") then
+      --       setup_msdirect_repos(vim.fn.getcwd(), metadata.path)
+      --     end
+      --   end
+      --
+      --   if op == Worktree.Operations.Switch then
+      --     print("Switch from " .. metadata.prev_path .. " to " .. metadata.path)
+      --   end
+      -- end)
     end
   },
 
