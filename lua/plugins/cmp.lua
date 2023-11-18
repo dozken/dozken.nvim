@@ -10,14 +10,27 @@ return {
     "saadparwaiz1/cmp_luasnip",     -- for autocompletion
     "rafamadriz/friendly-snippets", -- useful snippets
     "onsails/lspkind.nvim",         -- vs-code like pictograms
+    {
+      "dozken/LuaSnip-snippets.nvim",
+      branch ="feature/ts_builder_snips",
+      dependencies = {
+        "L3MON4D3/LuaSnip"
+      },
+      config = function()
+        local luasnip = require "luasnip"
+        luasnip.snippets = require("luasnip_snippets").load_snippets()
+      end
+    }
   },
   config = function()
     vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
     local cmp = require "cmp"
 
     local luasnip = require "luasnip"
+    -- luasnip.snippets = require("luasnip_snippets").load_snippets()
     -- loads snippets from the luasnippents dir
-    require("luasnip.loaders.from_lua").load({ paths = "./luasnippets" })
+    -- luasnip.snippets = require("luasnip-snippets").load_snippets()
+    -- require("luasnip.loaders.from_lua").load({ paths = "./luasnippets" })
     -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
     require("luasnip.loaders.from_vscode").lazy_load()
     luasnip.config.setup {}
@@ -73,11 +86,11 @@ return {
       },
       -- sources for autocompletion
       sources = cmp.config.sources {
+        { name = "luasnip" },
+        { name = "nvim_lsp" },
+        { name = "nvim_lua" },
         { name = "codeium" },
         { name = "cmp_tabnine" },
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-        { name = "nvim_lua" },
         { name = "buffer" },
         { name = "path" },
       },
@@ -93,11 +106,11 @@ return {
             TabNine = ""
           },
           menu = {
+            luasnip = "[Snips]",
             nvim_lsp = "[LSP]",
+            nvim_lua = "[Lua]",
             codeium = "[Codeium]",
             cmp_tabnine = "[TabNine]",
-            luasnip = "[Snips]",
-            nvim_lua = "[Lua]",
             buffer = "[Buffer]",
             path = "[Path]",
           },
@@ -124,7 +137,35 @@ return {
           hl_group = "CmpGhostText",
         },
       },
+      ---@diagnostic disable-next-line: missing-fields
       sorting = defaults.sorting,
+      -- sorting = {
+      --   -- TODO: Would be cool to add stuff like "See variable names before method names" in rust, or something like that.
+      --   comparators = {
+      --     cmp.config.compare.offset,
+      --     cmp.config.compare.exact,
+      --     cmp.config.compare.score,
+      --
+      --     -- copied from cmp-under, but I don't think I need the plugin for this.
+      --     -- I might add some more of my own.
+      --     function(entry1, entry2)
+      --       local _, entry1_under = entry1.completion_item.label:find "^_+"
+      --       local _, entry2_under = entry2.completion_item.label:find "^_+"
+      --       entry1_under = entry1_under or 0
+      --       entry2_under = entry2_under or 0
+      --       if entry1_under > entry2_under then
+      --         return false
+      --       elseif entry1_under < entry2_under then
+      --         return true
+      --       end
+      --     end,
+      --
+      --     cmp.config.compare.kind,
+      --     cmp.config.compare.sort_text,
+      --     cmp.config.compare.length,
+      --     cmp.config.compare.order,
+      --   },
+      -- }, 
       -- sorting = {
       --   priority_weight = 2,
       --   comparators = {
