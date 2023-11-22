@@ -2,7 +2,6 @@ return {
   -- Git related plugins
   {
     "ThePrimeagen/git-worktree.nvim",
-    -- event = { "VimEnter" },
     keys = {
       {
         "<leader>gw",
@@ -103,7 +102,6 @@ return {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    -- event = { 'BufReadPost', 'BufNewFile' },
     opts = {
       -- See `:help gitsigns.txt`
       signs = {

@@ -114,11 +114,14 @@ return {
   {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    -- event = { 'BufReadPost', 'BufNewFile' },
+    event = { "BufReadPre", "BufNewFile", "BufWritePre" },
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
-      { 'williamboman/mason.nvim',          config = true },
+      {
+        'williamboman/mason.nvim',
+        cmd = "Mason",
+        config = true
+      },
       { 'williamboman/mason-lspconfig.nvim' },
 
       -- Useful status updates for LSP
@@ -160,6 +163,7 @@ return {
             },
           },
         },
+        -- htmx_lsp = {},
         -- vtsls = {},
         -- biome = {},
         -- html = { filetypes = { 'html', 'twig', 'hbs'} },
@@ -207,6 +211,9 @@ return {
           }
         end,
       }
+
+      local lspconfig = require('lspconfig')
+      lspconfig.htmx.setup {}
     end,
   },
 }

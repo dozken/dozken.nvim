@@ -1,10 +1,4 @@
 return {
-  -- {
-  --   'echasnovski/mini.completion',
-  --   version = '*',
-  --   event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-  --   opts = {},
-  -- },
   {
     'echasnovski/mini.files',
     version = '*',
