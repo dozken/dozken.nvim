@@ -1,6 +1,9 @@
 return {
   'mfussenegger/nvim-dap',
   lazy = true,
+  keys = {
+    { '<leader>b', '<cmd>lua require("dap").toggle_breakpoint()<cr>', { desc = 'Debug: Toggle Breakpoint' } }
+  },
   dependencies = {
     -- Creates a beautiful debugger UI
     {
@@ -52,11 +55,13 @@ return {
 
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
+    ---@diagnostic disable-next-line: missing-fields
     dapui.setup {
       -- Set icons to characters that are more likely to work in every terminal.
       --    Feel free to remove or use ones that you like more! :)
       --    Don't feel like these are good choices.
       icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
+      ---@diagnostic disable-next-line: missing-fields
       controls = {
         icons = {
           pause = '⏸',

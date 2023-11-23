@@ -25,7 +25,7 @@ return {
 
   {
     'rose-pine/neovim',
-    event = { "UIEnter" },
+    event = { "VimEnter" },
     enabled = true,
     name = 'rose-pine',
     lazy = true,
