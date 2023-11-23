@@ -126,8 +126,8 @@ return {
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',                tag = 'legacy', opts = {} },
-
+      { 'j-hui/fidget.nvim',                opts = {} },
+      --
       -- Additional lua configuration, makes nvim stuff amazing!
       { 'folke/neodev.nvim',                opts = {} },
 
@@ -182,10 +182,10 @@ return {
     },
     config = function(_, opts)
       require('which-key').register({
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+        ['<leader>c'] = { name = 'Code', _ = 'which_key_ignore' },
+        ['<leader>d'] = { name = 'Document', _ = 'which_key_ignore' },
+        ['<leader>w'] = { name = 'Workspace', _ = 'which_key_ignore' },
+        ['<leader>r'] = { name = 'Rename', _ = 'which_key_ignore' },
         ['<leader>x'] = { name = 'Quickfix', _ = 'which_key_ignore' },
       })
       local servers = opts.servers
