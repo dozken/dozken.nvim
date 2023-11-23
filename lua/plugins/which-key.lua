@@ -1,6 +1,6 @@
 return {
   "folke/which-key.nvim",
-  keys = {{"<leader>w", "<cmd>WhichKey<cr>"}},
+  keys = {{"<leader>", "<cmd>WhichKey<cr>"}},
   init = function()
     vim.o.timeout = true
     vim.o.timeoutlen = 300

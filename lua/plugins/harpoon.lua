@@ -1,6 +1,5 @@
 return {
   "ThePrimeagen/harpoon",
-  events = "VeryLazy",
   keys = {
     { "<leader>hm", '<cmd>Telescope harpoon marks<cr>',                      desc = "Harpoon Marks" },
     { "<C-e>",      '<cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>' },
@@ -16,7 +15,6 @@ return {
     "nvim-lua/plenary.nvim",
     {
       "nvim-telescope/telescope.nvim",
-      lazy = true,
       config = function()
         require("telescope").load_extension("harpoon")
       end,
