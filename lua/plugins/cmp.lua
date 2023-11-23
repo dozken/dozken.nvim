@@ -1,6 +1,6 @@
 return {
   "hrsh7th/nvim-cmp",
-  event = "InsertEnter",
+  event = { "InsertEnter" },
   lazy = true,
   dependencies = {
     "hrsh7th/cmp-buffer", -- source for text in buffer
@@ -12,7 +12,7 @@ return {
     "onsails/lspkind.nvim",         -- vs-code like pictograms
     {
       "dozken/LuaSnip-snippets.nvim",
-      branch ="feature/ts_builder_snips",
+      branch = "feature/ts_builder_snips",
       dependencies = {
         "L3MON4D3/LuaSnip"
       },
@@ -165,7 +165,7 @@ return {
       --     cmp.config.compare.length,
       --     cmp.config.compare.order,
       --   },
-      -- }, 
+      -- },
       -- sorting = {
       --   priority_weight = 2,
       --   comparators = {

@@ -1,8 +1,8 @@
 return {
   {
     'echasnovski/mini.files',
+    enabled = false,
     version = '*',
-    event = { "BufReadPost", "BufNewFile" },
     opts = {}
   },
   {

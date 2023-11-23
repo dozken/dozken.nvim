@@ -1,6 +1,6 @@
 return {
   'nvim-lualine/lualine.nvim',
-  event = "UIEnter",
+  event = { "UIEnter" },
   init = function()
     vim.opt.shortmess:append({ W = true, I = false, c = true })
   end,
