@@ -86,11 +86,11 @@ return {
       },
       -- sources for autocompletion
       sources = cmp.config.sources {
+        { name = "codeium" },
+        { name = "cmp_tabnine" },
         { name = "luasnip" },
         { name = "nvim_lsp" },
         { name = "nvim_lua" },
-        { name = "codeium" },
-        { name = "cmp_tabnine" },
         { name = "buffer" },
         { name = "path" },
       },
@@ -117,19 +117,19 @@ return {
 
           -- The function below will be called before any actual modifications from lspkind
           -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-          before = function(entry, vim_item)
-            -- show prediction strength
-            if entry.source.name == "cmp_tabnine" then
-              local detail = (entry.completion_item.labelDetails or {}).detail
-              if detail and detail:find(".*%%.*") then
-                vim_item.kind = vim_item.kind .. " " .. detail
-              end
-              if (entry.completion_item.data or {}).multiline then
-                vim_item.kind = vim_item.kind .. " " .. "[ML]"
-              end
-            end
-            return vim_item
-          end
+          -- before = function(entry, vim_item)
+          --   -- show prediction strength
+          --   if entry.source.name == "cmp_tabnine" then
+          --     local detail = (entry.completion_item.labelDetails or {}).detail
+          --     if detail and detail:find(".*%%.*") then
+          --       vim_item.kind = vim_item.kind .. " " .. detail
+          --     end
+          --     if (entry.completion_item.data or {}).multiline then
+          --       vim_item.kind = vim_item.kind .. " " .. "[ML]"
+          --     end
+          --   end
+          --   return vim_item
+          -- end
         })
       },
       experimental = {

@@ -51,11 +51,15 @@ vim.o.termguicolors = true
 vim.o.showmode = false
 
 -- tabs & indentation
-vim.o.tabstop = 2        -- 2 spaces for tabs (prettier default)
-vim.o.shiftwidth = 2     -- 2 spaces for indent width
+vim.o.tabstop = 4        -- 2 spaces for tabs (prettier default)
+vim.o.shiftwidth = 4     -- 2 spaces for indent width
 vim.o.expandtab = true   -- expand tab to spaces
 vim.o.autoindent = true  -- copy indent from current line when starting new one
-vim.o.smartindent = true -- Insert indents automatically
+vim.o.smartindent = true -- Insert indents automaticall                                    y
+vim.api.nvim_win_set_option(0, 'colorcolumn', '81')
+vim.cmd([[highlight ColorColumn ctermbg=NONE guibg=NONE]])
+vim.cmd([[match ColorColumn /\%>81v.\+/]])
+
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0

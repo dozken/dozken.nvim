@@ -2,6 +2,7 @@ return {
   -- TabNine
   {
     'tzachar/cmp-tabnine',
+    enabled = false,
     lazy = true,
     event = { "InsertEnter" },
     build = './install.sh',
