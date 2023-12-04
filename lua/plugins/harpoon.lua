@@ -19,6 +19,14 @@ return {
     config = function()
         local harpoon = require("harpoon")
         harpoon:setup()
+        local highlights = {
+            HarpoonWindow = { default = true, link = "NormalFloat" },
+            HarpoonBorder = { default = true, link = "FloatBorder" },
+            HarpoonTitle = { default = true, link = "FloatTitle" },
+        }
+        for k, v in pairs(highlights) do
+            vim.api.nvim_set_hl(0, k, v)
+        end
     end,
 
     dependencies = {
