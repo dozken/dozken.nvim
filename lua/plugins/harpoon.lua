@@ -1,23 +1,33 @@
 return {
-  "ThePrimeagen/harpoon",
-  keys = {
-    { "<leader>hm", '<cmd>Telescope harpoon marks<cr>',                      desc = "Harpoon Marks" },
-    { "<C-e>",      '<cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>' },
-    { "<leader>ha", '<cmd>lua require("harpoon.mark").add_file()<cr>',       desc = "Harpoon Add file" },
-    { "<A-h>",      '<cmd>lua require("harpoon.ui").nav_file(1)<cr>',        desc = "Harpoon 1" },
-    { "<A-j>",      '<cmd>lua require("harpoon.ui").nav_file(2)<cr>',        desc = "Harpoon 2" },
-    { "<A-k>",      '<cmd>lua require("harpoon.ui").nav_file(3)<cr>',        desc = "Harpoon 3" },
-    { "<A-l>",      '<cmd>lua require("harpoon.ui").nav_file(4)<cr>',        desc = "Harpoon 4" },
-    { "<leader>hp", '<cmd>lua require("harpoon.ui").nav_prev()<cr>',         desc = "Harpoon Prev" },
-    { "<leader>hn", '<cmd>lua require("harpoon.ui").nav_next()<cr>',         desc = "Harpoon Next" },
-  },
-  dependencies = {
-    "nvim-lua/plenary.nvim",
-    {
-      "nvim-telescope/telescope.nvim",
-      config = function()
-        require("telescope").load_extension("harpoon")
-      end,
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    keys = function()
+        local harpoon = require("harpoon")
+        return {
+            { "<C-e>",      function() harpoon.ui:toggle_quick_menu(harpoon:list()) end },
+            { "<A-h>",      function() harpoon:list():select(1) end },
+            { "<A-j>",      function() harpoon:list():select(2) end },
+            { "<A-k>",      function() harpoon:list():select(3) end },
+            { "<A-l>",      function() harpoon:list():select(3) end },
+            { "<leader>ha", function() harpoon:list():append() end,                     desc = "Harpoon Add file" },
+            { "<leader>hp", function() harpoon:list():next() end,                       desc = "Harpoon Prev" },
+            { "<leader>hn", function() harpoon:list():prev() end,                       desc = "Harpoon Next" },
+            { "<leader>hm", '<cmd>Telescope harpoon marks<cr>',                         desc = "Harpoon Marks" },
+        }
+    end,
+    opts = {},
+    config = function()
+        local harpoon = require("harpoon")
+        harpoon:setup()
+    end,
+
+    dependencies = {
+        "nvim-lua/plenary.nvim",
+        {
+            "nvim-telescope/telescope.nvim",
+            config = function()
+                require("telescope").load_extension("harpoon")
+            end,
+        },
     },
-  },
 }
