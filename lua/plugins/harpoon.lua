@@ -18,7 +18,15 @@ return {
     opts = {},
     config = function()
         local harpoon = require("harpoon")
-        harpoon:setup()
+        harpoon:setup({
+            settings = {
+                save_on_toggle = false,
+                sync_on_ui_close = false,
+                key = function()
+                    return vim.loop.cwd()
+                end,
+            },
+        })
         local highlights = {
             HarpoonWindow = { default = true, link = "NormalFloat" },
             HarpoonBorder = { default = true, link = "FloatBorder" },

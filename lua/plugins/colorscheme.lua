@@ -11,7 +11,7 @@ return {
     {
         "catppuccin/nvim",
         name = "catppuccin",
-        lazy = false,
+        -- lazy = false,
         event = { "VimEnter" },
         priority = 1000,
         opts = {

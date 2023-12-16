@@ -4,7 +4,7 @@ return {
     'tzachar/cmp-tabnine',
     enabled = false,
     lazy = true,
-    event = { "InsertEnter" },
+    -- event = { "VeryLazy" },
     build = './install.sh',
     dependencies = {
       'hrsh7th/nvim-cmp',
@@ -34,7 +34,7 @@ return {
   {
     "Exafunction/codeium.nvim",
     lazy = true,
-    event = { "InsertEnter" },
+    event = { "BufRead", "BufNewFile" },
     dependencies = {
       'hrsh7th/nvim-cmp',
       'onsails/lspkind.nvim',
