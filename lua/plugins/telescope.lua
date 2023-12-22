@@ -1,4 +1,5 @@
 return {
+{
     'nvim-telescope/telescope.nvim',
     -- lazy = false,
     event = "VimEnter",
@@ -41,7 +42,6 @@ return {
             cond = function()
                 return vim.fn.executable 'make' == 1
             end,
-            lazy = true,
             config = function()
                 require('telescope').load_extension('fzf')
             end,
@@ -49,4 +49,5 @@ return {
     },
     config = function()
     end
+}
 }

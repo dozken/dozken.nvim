@@ -20,6 +20,12 @@ local get_augroup = function(client)
     return _augroups[client.id]
 end
 
+vim.filetype.add({
+    extension = {
+        templ = "templ",
+    },
+})
+
 -- Whenever an LSP attaches to a buffer, we will run this function.
 --
 -- See `:help LspAttach` for more information about this autocmd event.
@@ -145,45 +151,68 @@ return {
             servers = {
                 -- clangd = {},
                 gopls = {
-                    gofumpt = true,
-                    codelenses = {
-                        gc_details = false,
-                        generate = true,
-                        regenerate_cgo = true,
-                        run_govulncheck = true,
-                        test = true,
-                        tidy = true,
-                        upgrade_dependency = true,
-                        vendor = true,
-                    },
-                    hints = {
-                        assignVariableTypes = true,
-                        compositeLiteralFields = true,
-                        compositeLiteralTypes = true,
-                        constantValues = true,
-                        functionTypeParameters = true,
-                        parameterNames = true,
-                        rangeVariableTypes = true,
-                    },
-                    analyses = {
-                        fieldalignment = true,
-                        nilness = true,
-                        unusedparams = true,
-                        unusedwrite = true,
-                        useany = true,
-                    },
-                    usePlaceholders = true,
-                    completeUnimported = true,
-                    staticcheck = true,
-                    directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
-                    semanticTokens = true,
+                    -- gofumpt = true,
+                    -- codelenses = {
+                    --     gc_details = false,
+                    --     generate = true,
+                    --     regenerate_cgo = true,
+                    --     run_govulncheck = true,
+                    --     test = true,
+                    --     tidy = true,
+                    --     upgrade_dependency = true,
+                    --     vendor = true,
+                    -- },
+                    -- hints = {
+                    --     assignVariableTypes = true,
+                    --     compositeLiteralFields = true,
+                    --     compositeLiteralTypes = true,
+                    --     constantValues = true,
+                    --     functionTypeParameters = true,
+                    --     parameterNames = true,
+                    --     rangeVariableTypes = true,
+                    -- },
+                    -- analyses = {
+                    --     fieldalignment = true,
+                    --     nilness = true,
+                    --     unusedparams = true,
+                    --     unusedwrite = true,
+                    --     useany = true,
+                    -- },
+                    -- usePlaceholders = true,
+                    -- completeUnimported = true,
+                    -- staticcheck = true,
+                    -- directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+                    -- semanticTokens = true,
+                },
+                templ = {
+                    filetypes = { "templ" }
                 },
                 -- pyright = {},
-                rust_analyzer = {},
+                rust_analyzer = {
+                    cargo = {
+                        allFeatures = true,
+                        loadOutDirsFromCheck = true,
+                        runBuildScripts = true,
+                    },
+                    -- Add clippy lints for Rust.
+                    checkOnSave = {
+                        allFeatures = true,
+                        command = "clippy",
+                        extraArgs = { "--no-deps" },
+                    },
+                    procMacro = {
+                        enable = true,
+                        ignored = {
+                            ["async-trait"] = { "async_trait" },
+                            ["napi-derive"] = { "napi" },
+                            ["async-recursion"] = { "async_recursion" },
+                        },
+                    },
+                },
                 tsserver = {
                     keys = {
-                        { "<leader>co", "<cmd>TypescriptOrganizeImports<CR>", desc = "Organize Imports" },
-                        { "<leader>cR", "<cmd>TypescriptRenameFile<CR>",      desc = "Rename File" },
+                        { "<leader>ro", "<cmd>TypescriptOrganizeImports<CR>", desc = "Organize Imports" },
+                        { "<leader>rN", "<cmd>TypescriptRenameFile<CR>",      desc = "Rename File" },
                     },
                     settings = {
                         typescript = {
@@ -205,11 +234,76 @@ return {
                         },
                     },
                 },
-                -- htmx_lsp = {},
+                htmx = {},
                 -- vtsls = {},
                 -- biome = {},
-                -- html = { filetypes = { 'html', 'twig', 'hbs'} },
+                html = { filetypes = { 'html', 'twig', 'hbs' } },
+                jdtls = {
+                    cmd = {
+                        --     "--jvm-arg=" .. string.format("-javaagent:%s", vim.fn.expand "$MASON/share/jdtls/lombok.jar"),
+                    },
 
+                    -- The command that starts the language server
+                    -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
+                    -- cmd = {
+                    --
+                    --     -- 💀
+                    --     'java', -- or '/path/to/java17_or_newer/bin/java'
+                    --     -- depends on if `java` is in your $PATH env variable and if it points to the right version.
+                    --
+                    --     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
+                    --     '-Dosgi.bundles.defaultStartLevel=4',
+                    --     '-Declipse.product=org.eclipse.jdt.ls.core.product',
+                    --     '-Dlog.protocol=true',
+                    --     '-Dlog.level=ALL',
+                    --     '-Xmx1g',
+                    --     '--add-modules=ALL-SYSTEM',
+                    --     '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+                    --     '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+                    --
+                    --     -- 💀
+                    --     '-jar', '/path/to/jdtls_install_location/plugins/org.eclipse.equinox.launcher_VERSION_NUMBER.jar',
+                    --     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
+                    --     -- Must point to the                                                     Change this to
+                    --     -- eclipse.jdt.ls installation                                           the actual version
+                    --
+                    --
+                    --     -- 💀
+                    --     '-configuration', '/path/to/jdtls_install_location/config_SYSTEM',
+                    --     -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^        ^^^^^^
+                    --     -- Must point to the                      Change to one of `linux`, `win` or `mac`
+                    --     -- eclipse.jdt.ls installation            Depending on your system.
+                    --
+                    --
+                    --     -- 💀
+                    --     -- See `data directory configuration` section in the README
+                    --     '-data', '/path/to/unique/per/project/workspace/folder'
+                    -- },
+                    --
+                    -- -- 💀
+                    -- -- This is the default if not provided, you can remove it. Or adjust as needed.
+                    -- -- One dedicated LSP server & client will be started per unique root_dir
+                    -- root_dir = require('jdtls.setup').find_root({ '.git', 'mvnw', 'gradlew' }),
+                    --
+                    -- -- Here you can configure eclipse.jdt.ls specific settings
+                    -- -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
+                    -- -- for a list of options
+                    -- settings = {
+                    --     java = {
+                    --     }
+                    -- },
+                    --
+                    -- -- Language server `initializationOptions`
+                    -- -- You need to extend the `bundles` with paths to jar files
+                    -- -- if you want to use additional eclipse.jdt.ls plugins.
+                    -- --
+                    -- -- See https://github.com/mfussenegger/nvim-jdtls#java-debug-installation
+                    -- --
+                    -- -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
+                    -- init_options = {
+                    --     bundles = {}
+                    -- },
+                },
                 lua_ls = {
                     Lua = {
                         completion = {
@@ -243,19 +337,36 @@ return {
                 ensure_installed = vim.tbl_keys(servers),
             }
 
+            servers.nrs_language_server = {
+                filetypes = { 'html' },
+            }
+
             mason_lspconfig.setup_handlers {
                 function(server_name)
-                    require('lspconfig')[server_name].setup {
+                    local config = {
                         capabilities = capabilities,
                         on_attach = on_attach,
                         settings = servers[server_name],
                         filetypes = (servers[server_name] or {}).filetypes,
                     }
+
+                    if server_name == "jdtls" then
+                        config.cmd = { vim.fn.exepath("jdtls"),
+
+                            "--jvm-arg=" .. string.format("-javaagent:%s", vim.fn.expand "$MASON/share/jdtls/lombok.jar"),
+                        }
+                    end
+
+                    if server_name == "nrs_language_server" then
+                        print("hello")
+                    end
+
+                    require('lspconfig')[server_name].setup(config)
                 end,
             }
 
-            local lspconfig = require('lspconfig')
-            lspconfig.htmx.setup {}
+            -- local lspconfig = require('lspconfig')
+            -- lspconfig.htmx.setup {}
         end,
     },
 }
