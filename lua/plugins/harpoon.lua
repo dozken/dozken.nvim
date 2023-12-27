@@ -15,28 +15,7 @@ return {
             { "<leader>hm", '<cmd>Telescope harpoon marks<cr>',                         desc = "Harpoon Marks" },
         }
     end,
-    opts = {},
-    config = function()
-        local harpoon = require("harpoon")
-        harpoon:setup({
-            settings = {
-                save_on_toggle = false,
-                sync_on_ui_close = false,
-                key = function()
-                    return vim.loop.cwd()
-                end,
-            },
-        })
-        local highlights = {
-            HarpoonWindow = { default = true, link = "NormalFloat" },
-            HarpoonBorder = { default = true, link = "FloatBorder" },
-            HarpoonTitle = { default = true, link = "FloatTitle" },
-        }
-        for k, v in pairs(highlights) do
-            vim.api.nvim_set_hl(0, k, v)
-        end
-    end,
-
+    config = true,
     dependencies = {
         "nvim-lua/plenary.nvim",
         {

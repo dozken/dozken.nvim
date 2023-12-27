@@ -13,8 +13,8 @@ local builderName = vim.fn.expand('%:t:r')
 local entity = builderName:match("^%u%l+")
 
 local function capitalize(str)
-  str = str[1][1]
-  return str:sub(1, 1):upper() .. str:sub(2)
+    str = str[1][1]
+    return str:sub(1, 1):upper() .. str:sub(2)
 end
 
 -- ls.add_snippets("typescript", {

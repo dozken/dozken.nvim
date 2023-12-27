@@ -2,7 +2,6 @@
 return {
     "hrsh7th/nvim-cmp",
     event = { "BufRead", "BufNewFile" },
-    lazy = true,
     dependencies = {
         "hrsh7th/cmp-buffer", -- source for text in buffer
         "hrsh7th/cmp-path",   -- source for file system paths
@@ -16,22 +15,24 @@ return {
             branch = "feature/ts_builder_snips",
         }
     },
-    config = function()
+    opts = function()
         vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
         local cmp = require "cmp"
-
         local luasnip = require "luasnip"
-        require("luasnip.loaders.from_vscode").lazy_load()
         luasnip.config.setup {}
+        require("luasnip.loaders.from_vscode").lazy_load()
         luasnip.snippets = require("luasnip_snippets").load_snippets()
 
-
-        local defaults = require("cmp.config.default")()
-
         local lspkind = require "lspkind"
-
-        ---@diagnostic disable-next-line: missing-fields
-        cmp.setup {
+        return {
+            window = {
+                completion = { -- rounded border; thin-style scrollbar
+                    border = 'rounded',
+                },
+                documentation = { -- no border; native-style scrollbar
+                    border = 'rounded',
+                },
+            },
             preselect = 'item',
             ---@diagnostic disable-next-line: missing-fields
             completion = {

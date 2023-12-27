@@ -8,7 +8,6 @@ return {
         vim.opt.shortmess:append({ W = true, I = false, c = true })
     end,
     opts = {
-
         sections = {
             lualine_b = { 'branch', 'diff', 'diagnostics' },
             lualine_c = {
@@ -25,7 +24,8 @@ return {
             -- },
         },
         options = {
-            theme = 'catppuccin',
+            -- theme = 'rose-pine',
+            -- theme = 'catppuccin',
             -- component_separators = { left = '', right = '' },
             -- component_separators = '|',
             section_separators = '',

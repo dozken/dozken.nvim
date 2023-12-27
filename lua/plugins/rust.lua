@@ -1,7 +1,6 @@
-if true then return {} end
-
 return {
     'simrat39/rust-tools.nvim',
+    enabled = false,
     ft = "rust",
     config = function()
         require('mason-lspconfig').setup({

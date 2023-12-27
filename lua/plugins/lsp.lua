@@ -20,11 +20,6 @@ local get_augroup = function(client)
     return _augroups[client.id]
 end
 
-vim.filetype.add({
-    extension = {
-        templ = "templ",
-    },
-})
 
 -- Whenever an LSP attaches to a buffer, we will run this function.
 --
@@ -72,6 +67,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(client, bufnr)
+    if client.name == "gopls" then
+        if not client.server_capabilities.semanticTokensProvider then
+            local semantic = client.config.capabilities.textDocument.semanticTokens
+            client.server_capabilities.semanticTokensProvider = {
+                full = true,
+                legend = {
+                    tokenTypes = semantic.tokenTypes,
+                    tokenModifiers = semantic.tokenModifiers,
+                },
+                range = true,
+            }
+        end
+    end
     -- NOTE: Remember that lua is a real programming language, and as such it is possible
     -- to define small helper and utility functions so you don't have to repeat yourself
     -- many times.
@@ -123,144 +131,162 @@ end
 return {
     -- NOTE: This is where your plugins related to LSP can be installed.
     --  The configuration is done below. Search for lspconfig to find it below.
-    {
-        -- LSP Configuration & Plugins
-        'neovim/nvim-lspconfig',
-        event = { "BufRead", "BufNewFile", "BufWritePre" },
-        dependencies = {
-            -- Automatically install LSPs to stdpath for neovim
-            {
-                'williamboman/mason.nvim',
-                cmd = "Mason",
-                config = true
-            },
-            { 'williamboman/mason-lspconfig.nvim' },
-
-            -- Useful status updates for LSP
-            -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            {
-                "j-hui/fidget.nvim",
-                opts = {
-                    notification = {
-                        window = {
-                            winblend = 0
-                        }
-                    }
-                },
-            },
-            --
-            -- Additional lua configuration, makes nvim stuff amazing!
-            { 'folke/neodev.nvim',                opts = {} },
-
+    -- LSP Configuration & Plugins
+    'neovim/nvim-lspconfig',
+    event = { "BufRead", "BufNewFile", "BufWritePre" },
+    dependencies = {
+        -- Automatically install LSPs to stdpath for neovim
+        {
+            'williamboman/mason.nvim',
+            cmd = "Mason",
+            config = true
         },
-        opts = {
-            servers = {
-                lua_ls = {
-                    Lua = {
-                        completion = {
-                            callSnippet = "Replace"
-                        },
-                        workspace = { checkThirdParty = false },
-                        telemetry = { enable = false },
-                    },
-                },
-                gopls = {},
-                templ = {
-                    filetypes = { "templ" }
-                },
-                rust_analyzer = {
-                    cargo = {
-                        allFeatures = true,
-                        loadOutDirsFromCheck = true,
-                        runBuildScripts = true,
-                    },
-                    -- Add clippy lints for Rust.
-                    checkOnSave = {
-                        allFeatures = true,
-                        command = "clippy",
-                        extraArgs = { "--no-deps" },
-                    },
-                    procMacro = {
-                        enable = true,
-                        ignored = {
-                            ["async-trait"] = { "async_trait" },
-                            ["napi-derive"] = { "napi" },
-                            ["async-recursion"] = { "async_recursion" },
-                        },
-                    },
-                    excludeDirs = {
-                        "_build",
-                        ".dart_tool",
-                        ".flatpak-builder",
-                        ".git",
-                        ".gitlab",
-                        ".gitlab-ci",
-                        ".gradle",
-                        ".idea",
-                        ".next",
-                        ".project",
-                        ".scannerwork",
-                        ".settings",
-                        ".venv",
-                        "archetype-resources",
-                        "bin",
-                        "hooks",
-                        "node_modules",
-                        "po",
-                        "screenshots",
-                        "target"
-                    }
-                },
-                tsserver = {},
-                -- htmx = {},
-                -- html = { filetypes = { 'html', 'twig', 'hbs' } },
-                jdtls = {
-                    cmd = {
-                        { vim.fn.exepath("jdtls"),
-                            "--jvm-arg=" .. string.format("-javaagent:%s", vim.fn.expand "$MASON/share/jdtls/lombok.jar"),
-                        }
-                    }
-                },
-            }
+        { 'williamboman/mason-lspconfig.nvim' },
 
+        -- Useful status updates for LSP
+        -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+        {
+            "j-hui/fidget.nvim",
+            opts = {
+                notification = {
+                    window = {
+                        winblend = 0
+                    }
+                }
+            },
         },
-        config = function(_, opts)
-            require('which-key').register({
-                ['<leader>c'] = { name = 'Code', _ = 'which_key_ignore' },
-                ['<leader>d'] = { name = 'Document', _ = 'which_key_ignore' },
-                ['<leader>w'] = { name = 'Workspace', _ = 'which_key_ignore' },
-                ['<leader>r'] = { name = 'Rename', _ = 'which_key_ignore' },
-                ['<leader>x'] = { name = 'Quickfix', _ = 'which_key_ignore' },
-            })
-            local servers = opts.servers
+        -- Additional lua configuration, makes nvim stuff amazing!
+        { 'folke/neodev.nvim',                opts = {} },
 
-            -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+    },
+    opts = {
+        servers = {
+            lua_ls = {
+                Lua = {
+                    completion = {
+                        callSnippet = "Replace"
+                    },
+                    workspace = { checkThirdParty = false },
+                    telemetry = { enable = false },
+                },
+            },
+            gopls = {
+                gofumpt = true,
+                codelenses = {
+                    gc_details = false,
+                    generate = true,
+                    regenerate_cgo = true,
+                    run_govulncheck = true,
+                    test = true,
+                    tidy = true,
+                    upgrade_dependency = true,
+                    vendor = true,
+                },
+                hints = {
+                    assignVariableTypes = true,
+                    compositeLiteralFields = true,
+                    compositeLiteralTypes = true,
+                    constantValues = true,
+                    functionTypeParameters = true,
+                    parameterNames = true,
+                    rangeVariableTypes = true,
+                },
+                analyses = {
+                    fieldalignment = true,
+                    nilness = true,
+                    unusedparams = true,
+                    unusedwrite = true,
+                    useany = true,
+                },
+                usePlaceholders = true,
+                completeUnimported = true,
+                staticcheck = true,
+                directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+                semanticTokens = true,
+            },
+            templ = {
+                filetypes = { "templ" }
+            },
+            rust_analyzer = {
+                cargo = {
+                    allFeatures = true,
+                    loadOutDirsFromCheck = true,
+                    runBuildScripts = true,
+                },
+                -- Add clippy lints for Rust.
+                checkOnSave = {
+                    allFeatures = true,
+                    command = "clippy",
+                    extraArgs = { "--no-deps" },
+                },
+                procMacro = {
+                    enable = true,
+                    ignored = {
+                        ["async-trait"] = { "async_trait" },
+                        ["napi-derive"] = { "napi" },
+                        ["async-recursion"] = { "async_recursion" },
+                    },
+                },
+                excludeDirs = {
+                    "_build",
+                    ".dart_tool",
+                    ".flatpak-builder",
+                    ".git",
+                    ".gitlab",
+                    ".gitlab-ci",
+                    ".gradle",
+                    ".idea",
+                    ".next",
+                    ".project",
+                    ".scannerwork",
+                    ".settings",
+                    ".venv",
+                    "archetype-resources",
+                    "bin",
+                    "hooks",
+                    "node_modules",
+                    "po",
+                    "screenshots",
+                    "target"
+                }
+            },
+            tsserver = {},
+            htmx = {},
+            html = { filetypes = { 'html', 'twig', 'hbs' } },
+            jdtls = {}
+        }
 
-            -- Ensure the servers above are installed
-            local mason_lspconfig = require 'mason-lspconfig'
+    },
+    config = function(_, opts)
+        require('which-key').register({
+            ['<leader>c'] = { name = 'Code', _ = 'which_key_ignore' },
+            ['<leader>d'] = { name = 'Document', _ = 'which_key_ignore' },
+            ['<leader>w'] = { name = 'Workspace', _ = 'which_key_ignore' },
+            ['<leader>r'] = { name = 'Refactor', _ = 'which_key_ignore' },
+            ['<leader>x'] = { name = 'Quickfix', _ = 'which_key_ignore' },
+        })
 
-            mason_lspconfig.setup {
-                ensure_installed = vim.tbl_keys(servers),
-            }
-
-            mason_lspconfig.setup_handlers {
+        local servers = opts.servers
+        -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+        -- Ensure the servers above are installed
+        require('mason-lspconfig').setup({
+            ensure_installed = vim.tbl_keys(servers),
+            handlers = {
                 function(server_name)
+                    if server_name == 'jdtls' then
+                        return
+                    end
                     local config = {
                         capabilities = capabilities,
                         on_attach = on_attach,
                         settings = servers[server_name],
                         filetypes = (servers[server_name] or {}).filetypes,
                     }
-
-                    if servers[server_name] ~= nil and servers[server_name].cmd ~= nil then
-                        config.cmd = servers[server_name].cmd
-                    end
-
                     require('lspconfig')[server_name].setup(config)
                 end,
-            }
-        end,
-    },
+            },
+        })
+    end
 }

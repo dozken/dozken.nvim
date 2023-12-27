@@ -66,3 +66,12 @@ vim.g.markdown_recommended_style = 0
 
 -- vim.opt.splitkeep = "sceen"
 -- vim.opt.shortmess:append({ C = true })
+
+
+
+--go templ file
+vim.filetype.add({
+    extension = {
+        templ = "templ",
+    },
+})

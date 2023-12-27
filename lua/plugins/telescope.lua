@@ -1,7 +1,5 @@
 return {
-{
     'nvim-telescope/telescope.nvim',
-    -- lazy = false,
     event = "VimEnter",
     cmd = 'Telescope',
     branch = '0.1.x',
@@ -47,7 +45,4 @@ return {
             end,
         },
     },
-    config = function()
-    end
-}
 }

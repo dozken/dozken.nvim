@@ -3,19 +3,19 @@ return {
         'echasnovski/mini.files',
         enabled = false,
         version = '*',
-        opts = {}
+        config = true,
     },
     {
         'echasnovski/mini.comment',
         version = '*',
         event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-        opts = {}
+        config = true,
     },
     {
         'echasnovski/mini.pairs',
         version = '*',
         event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-        opts = {}
+        config = true,
     },
     {
         "echasnovski/mini.indentscope",
@@ -50,21 +50,18 @@ return {
         'echasnovski/mini.hipatterns',
         version = '*',
         event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-        config = function()
-            local hipatterns = require('mini.hipatterns')
-            hipatterns.setup({
-                highlighters = {
-                    -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-                    fixme     = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
-                    hack      = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
-                    todo      = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
-                    note      = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
-                    text      = { pattern = '%f[%w]()TEXT()%f[%W]', group = 'MiniHipatternsText' },
+        opts = {
+            highlighters = {
+                -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+                fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+                hack  = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+                todo  = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
+                note  = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
+                text  = { pattern = '%f[%w]()TEXT()%f[%W]', group = 'MiniHipatternsText' },
 
-                    -- Highlight hex color strings (`#rrggbb`) using that color
-                    hex_color = hipatterns.gen_highlighter.hex_color(),
-                },
-            })
-        end
+                -- Highlight hex color strings (`#rrggbb`) using that color
+                -- hex_color = hipatterns.gen_highlighter.hex_color(),
+            },
+        },
     },
 }

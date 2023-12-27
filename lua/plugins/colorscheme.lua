@@ -1,26 +1,24 @@
 return {
     {
-        "craftzdog/solarized-osaka.nvim",
-        lazy = true,
-        priority = 1000,
-        opts = {},
-        config = function(_, opts)
-            -- vim.cmd [[colorscheme solarized-osaka]]
-        end,
-    },
-    {
         "catppuccin/nvim",
         name = "catppuccin",
-        -- lazy = false,
-        event = { "VimEnter" },
         priority = 1000,
         opts = {
+            color_overrides = {
+                all = {
+                    base = "#111000",
+                },
+            },
+            styles = {                   -- Handles the styles of general hi groups (see `:h highlight-args`):
+                comments = { "italic" }, -- Change the style of comments
+            },
             transparent_background = true,
+
             intergrations = {
                 treesitter = true,
                 treesitter_context = false,
                 mason = true,
-                cmp = true,
+                cmp = false,
                 harpoon = true,
                 fidget = true,
                 telescope = true,
@@ -29,49 +27,79 @@ return {
                     indentscope_color = "",
                 },
 
-            }
+            },
+            highlight_overrides = {
+                all = function(colors)
+                    return {
+                        NvimTreeNormal = { fg = colors.none },
+                        CmpBorder = { fg = "#3e4145", bg = "#ff00ff" },
+                    }
+                end,
+            },
         },
         config = function(_, opts)
             require('catppuccin').setup(opts)
             vim.cmd.colorscheme 'catppuccin-mocha'
         end,
+        dependencies = {
+            {
+                'nvim-lualine/lualine.nvim',
+                event = 'ColorScheme',
+                config = function(_, opts)
+                    opts.options.theme = 'catppuccin-mocha'
+                    require('lualine').setup(opts)
+                end
+            }
+        }
     },
-    --
-    -- {
-    --   'folke/tokyonight.nvim',
-    --   enabled = false,
-    --   lazy = true,
-    --   event = { "VimEnter" },
-    --   priority = 1000,
-    --   opts = { style = 'moon' },
-    --   config = function()
-    --     vim.cmd.colorscheme 'tokyonight-moon'
-    --   end,
-    -- },
 
-    -- {
-    --   'rose-pine/neovim',
-    --   event = { "VimEnter" },
-    --   enabled = true,
-    --   name = 'rose-pine',
-    --   lazy = true,
-    --   priority = 1000,
-    --   config = function()
-    --
-    --     require('rose-pine').setup({
-    --       disable_background = true,
-    --       highlight_groups = {
-    --         TelescopeBorder = { fg = "highlight_high", bg = "none" },
-    --         TelescopeNormal = { bg = "none" },
-    --         TelescopePromptNormal = { bg = "none" },
-    --         TelescopeResultsNormal = { fg = "subtle", bg = "none" },
-    --         TelescopeSelection = { fg = "text", bg = "base" },
-    --         TelescopeSelectionCaret = { fg = "rose", bg = "rose" },
-    --       },
-    --     })
-    --     --
-    --     -- Set colorscheme after options
-    --     vim.cmd('colorscheme rose-pine')
-    --   end,
-    -- },
+    {
+        'folke/tokyonight.nvim',
+        lazy = true,
+        opts = { style = 'night' },
+        config = function()
+            vim.cmd.colorscheme 'tokyonight-night'
+        end,
+        dependencies = {
+            {
+                'nvim-lualine/lualine.nvim',
+                lazy = true,
+                event = 'ColorScheme',
+                config = function(_, opts)
+                    opts.options.theme = 'tokyonight'
+                    require('lualine').setup(opts)
+                end
+            }
+        }
+    },
+
+
+    {
+        'rose-pine/neovim',
+        lazy = true,
+        name = 'rose-pine',
+        opts = {
+            groups = {
+                background = "#111000"
+            }
+        },
+        config = function(_, opts)
+            require('rose-pine').setup(opts)
+            vim.cmd.colorscheme 'rose-pine'
+        end,
+        dependencies = {
+            {
+                'nvim-lualine/lualine.nvim',
+                lazy = true,
+                event = 'ColorScheme',
+                event = 'ColorScheme',
+                config = function(_, opts)
+                    opts.options.theme = 'rose-pine'
+                    require('lualine').setup(opts)
+                end
+            }
+        }
+
+    },
+
 }
