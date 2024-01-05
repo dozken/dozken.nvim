@@ -1,22 +1,22 @@
 return {
-    {
-        'echasnovski/mini.files',
-        enabled = false,
-        version = '*',
-        config = true,
-    },
+    -- {
+    --     'echasnovski/mini.files',
+    --     enabled = false,
+    --     version = '*',
+    --     config = true,
+    -- },
     {
         'echasnovski/mini.comment',
         version = '*',
         event = { "BufReadPost", "BufNewFile", "BufWritePre" },
         config = true,
     },
-    {
-        'echasnovski/mini.pairs',
-        version = '*',
-        event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-        config = true,
-    },
+    -- {
+    --     'echasnovski/mini.pairs',
+    --     version = '*',
+    --     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    --     config = true,
+    -- },
     {
         "echasnovski/mini.indentscope",
         version = '*',

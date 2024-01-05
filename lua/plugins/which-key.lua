@@ -1,6 +1,6 @@
 return {
     "folke/which-key.nvim",
-    event = "VimEnter",
+    event = "UIEnter",
     init = function()
         vim.o.timeout = true
         vim.o.timeoutlen = 300

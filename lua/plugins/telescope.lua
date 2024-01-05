@@ -1,6 +1,6 @@
 return {
     'nvim-telescope/telescope.nvim',
-    event = "VimEnter",
+    event = 'UIEnter',
     cmd = 'Telescope',
     branch = '0.1.x',
     opts = {

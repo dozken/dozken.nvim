@@ -1,13 +1,11 @@
 return {
     'nvim-lualine/lualine.nvim',
-    event = { "VimEnter" },
-    dependencies = {
-        "catppuccin/nvim",
-    },
+    event = { "UIEnter" },
     init = function()
         vim.opt.shortmess:append({ W = true, I = false, c = true })
     end,
     opts = {
+
         sections = {
             lualine_b = { 'branch', 'diff', 'diagnostics' },
             lualine_c = {
@@ -24,7 +22,7 @@ return {
             -- },
         },
         options = {
-            -- theme = 'rose-pine',
+            theme = vim.g.colors_name,
             -- theme = 'catppuccin',
             -- component_separators = { left = '', right = '' },
             -- component_separators = '|',

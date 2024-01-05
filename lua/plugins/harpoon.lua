@@ -15,14 +15,11 @@ return {
             { "<leader>hm", '<cmd>Telescope harpoon marks<cr>',                         desc = "Harpoon Marks" },
         }
     end,
-    config = true,
+    config = function()
+        require("telescope").load_extension("harpoon")
+    end,
     dependencies = {
         "nvim-lua/plenary.nvim",
-        {
-            "nvim-telescope/telescope.nvim",
-            config = function()
-                require("telescope").load_extension("harpoon")
-            end,
-        },
+        "nvim-telescope/telescope.nvim",
     },
 }

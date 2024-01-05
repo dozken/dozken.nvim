@@ -129,164 +129,288 @@ local on_attach = function(client, bufnr)
 end
 
 return {
-    -- NOTE: This is where your plugins related to LSP can be installed.
-    --  The configuration is done below. Search for lspconfig to find it below.
-    -- LSP Configuration & Plugins
-    'neovim/nvim-lspconfig',
-    event = { "BufRead", "BufNewFile", "BufWritePre" },
-    dependencies = {
-        -- Automatically install LSPs to stdpath for neovim
-        {
-            'williamboman/mason.nvim',
-            cmd = "Mason",
-            config = true
+    {
+        "hrsh7th/nvim-cmp",
+        event = { "BufRead", "BufNewFile" },
+        dependencies = {
+            "hrsh7th/cmp-buffer", -- source for text in buffer
+            "hrsh7th/cmp-path", -- source for file system paths
+            "hrsh7th/cmp-nvim-lsp",
+            "L3MON4D3/LuaSnip",
+            "saadparwaiz1/cmp_luasnip", -- for autocompletion
+            "rafamadriz/friendly-snippets", -- useful snippets
+            "onsails/lspkind.nvim",     -- vs-code like pictograms
+            {
+                "dozken/LuaSnip-snippets.nvim",
+                branch = "feature/ts_builder_snips",
+            }
         },
-        { 'williamboman/mason-lspconfig.nvim' },
+        opts = function()
+            vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+            local cmp = require "cmp"
+            local luasnip = require "luasnip"
+            luasnip.config.setup {}
+            require("luasnip.loaders.from_vscode").lazy_load()
+            luasnip.snippets = require("luasnip_snippets").load_snippets()
 
-        -- Useful status updates for LSP
-        -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-        {
-            "j-hui/fidget.nvim",
-            opts = {
-                notification = {
-                    window = {
-                        winblend = 0
-                    }
-                }
-            },
-        },
-        -- Additional lua configuration, makes nvim stuff amazing!
-        { 'folke/neodev.nvim',                opts = {} },
-
-    },
-    opts = {
-        servers = {
-            lua_ls = {
-                Lua = {
-                    completion = {
-                        callSnippet = "Replace"
+            local lspkind = require "lspkind"
+            return {
+                window = {
+                    completion = { -- rounded border; thin-style scrollbar
+                        border = 'rounded',
                     },
-                    workspace = { checkThirdParty = false },
-                    telemetry = { enable = false },
-                },
-            },
-            gopls = {
-                gofumpt = true,
-                codelenses = {
-                    gc_details = false,
-                    generate = true,
-                    regenerate_cgo = true,
-                    run_govulncheck = true,
-                    test = true,
-                    tidy = true,
-                    upgrade_dependency = true,
-                    vendor = true,
-                },
-                hints = {
-                    assignVariableTypes = true,
-                    compositeLiteralFields = true,
-                    compositeLiteralTypes = true,
-                    constantValues = true,
-                    functionTypeParameters = true,
-                    parameterNames = true,
-                    rangeVariableTypes = true,
-                },
-                analyses = {
-                    fieldalignment = true,
-                    nilness = true,
-                    unusedparams = true,
-                    unusedwrite = true,
-                    useany = true,
-                },
-                usePlaceholders = true,
-                completeUnimported = true,
-                staticcheck = true,
-                directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
-                semanticTokens = true,
-            },
-            templ = {
-                filetypes = { "templ" }
-            },
-            rust_analyzer = {
-                cargo = {
-                    allFeatures = true,
-                    loadOutDirsFromCheck = true,
-                    runBuildScripts = true,
-                },
-                -- Add clippy lints for Rust.
-                checkOnSave = {
-                    allFeatures = true,
-                    command = "clippy",
-                    extraArgs = { "--no-deps" },
-                },
-                procMacro = {
-                    enable = true,
-                    ignored = {
-                        ["async-trait"] = { "async_trait" },
-                        ["napi-derive"] = { "napi" },
-                        ["async-recursion"] = { "async_recursion" },
+                    documentation = { -- no border; native-style scrollbar
+                        border = 'rounded',
                     },
                 },
-                excludeDirs = {
-                    "_build",
-                    ".dart_tool",
-                    ".flatpak-builder",
-                    ".git",
-                    ".gitlab",
-                    ".gitlab-ci",
-                    ".gradle",
-                    ".idea",
-                    ".next",
-                    ".project",
-                    ".scannerwork",
-                    ".settings",
-                    ".venv",
-                    "archetype-resources",
-                    "bin",
-                    "hooks",
-                    "node_modules",
-                    "po",
-                    "screenshots",
-                    "target"
-                }
-            },
-            tsserver = {},
-            htmx = {},
-            html = { filetypes = { 'html', 'twig', 'hbs' } },
-            jdtls = {}
-        }
-
+                preselect = 'item',
+                ---@diagnostic disable-next-line: missing-fields
+                completion = {
+                    completeopt = "menu,menuone,preview,noselect",
+                    -- completeopt = "menu,menuone,noinsert",
+                },
+                snippet = {
+                    -- configure how nvim-cmp interacts with snippet engine
+                    expand = function(args)
+                        luasnip.lsp_expand(args.body)
+                    end,
+                },
+                mapping = cmp.mapping.preset.insert {
+                    ['<C-j>'] = cmp.mapping.select_next_item(),
+                    ['<C-k>'] = cmp.mapping.select_prev_item(),
+                    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                    ['<C-Space>'] = cmp.mapping.complete {},
+                    ['<C-y>'] = cmp.mapping.confirm {
+                        behavior = cmp.ConfirmBehavior.Replace,
+                        select = true,
+                    },
+                    ['<CR>'] = cmp.mapping.confirm {
+                        behavior = cmp.ConfirmBehavior.Replace,
+                        select = true,
+                    },
+                    ['<C-l>'] = cmp.mapping(function(fallback)
+                        -- if cmp.visible() then
+                        -- cmp.select_next_item()
+                        -- else
+                        if luasnip.expand_or_locally_jumpable() then
+                            luasnip.expand_or_jump()
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
+                    ['<C-h>'] = cmp.mapping(function(fallback)
+                        -- if cmp.visible() then
+                        -- cmp.select_prev_item()
+                        -- else
+                        if luasnip.locally_jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            fallback()
+                        end
+                    end, { 'i', 's' }),
+                },
+                -- sources for autocompletion
+                sources = cmp.config.sources {
+                    { name = "codeium" },
+                    { name = "cmp_tabnine" },
+                    { name = "luasnip" },
+                    { name = "nvim_lsp" },
+                    { name = "nvim_lua" },
+                    { name = "buffer" },
+                    { name = "path" },
+                },
+                -- configure lspkind for vs-code like pictograms in completion menu
+                ---@diagnostic disable-next-line: missing-fields
+                formatting = {
+                    fields = { 'abbr', 'kind', 'menu' },
+                    format = lspkind.cmp_format({
+                        mode = "text_symbol", -- show only symbol annotations
+                        maxwidth = 50,     -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                        ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+                        symbol_map = {
+                            Codeium = "",
+                            TabNine = ""
+                        },
+                        menu = {
+                            luasnip = "[Snips]",
+                            nvim_lsp = "[LSP]",
+                            nvim_lua = "[Lua]",
+                            codeium = "[Codeium]",
+                            cmp_tabnine = "[TabNine]",
+                            buffer = "[Buffer]",
+                            path = "[Path]",
+                        },
+                    })
+                },
+                experimental = {
+                    ghost_text = {
+                        hl_group = "CmpGhostText",
+                    },
+                },
+            }
+        end,
     },
-    config = function(_, opts)
-        require('which-key').register({
-            ['<leader>c'] = { name = 'Code', _ = 'which_key_ignore' },
-            ['<leader>d'] = { name = 'Document', _ = 'which_key_ignore' },
-            ['<leader>w'] = { name = 'Workspace', _ = 'which_key_ignore' },
-            ['<leader>r'] = { name = 'Refactor', _ = 'which_key_ignore' },
-            ['<leader>x'] = { name = 'Quickfix', _ = 'which_key_ignore' },
-        })
-
-        local servers = opts.servers
-        -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-        -- Ensure the servers above are installed
-        require('mason-lspconfig').setup({
-            ensure_installed = vim.tbl_keys(servers),
-            handlers = {
-                function(server_name)
-                    if server_name == 'jdtls' then
-                        return
-                    end
-                    local config = {
-                        capabilities = capabilities,
-                        on_attach = on_attach,
-                        settings = servers[server_name],
-                        filetypes = (servers[server_name] or {}).filetypes,
-                    }
-                    require('lspconfig')[server_name].setup(config)
-                end,
+    {
+        -- NOTE: This is where your plugins related to LSP can be installed.
+        --  The configuration is done below. Search for lspconfig to find it below.
+        -- LSP Configuration & Plugins
+        'neovim/nvim-lspconfig',
+        event = { "BufRead", "BufNewFile", "BufWritePre" },
+        dependencies = {
+            -- Automatically install LSPs to stdpath for neovim
+            {
+                'williamboman/mason.nvim',
+                cmd = "Mason",
+                config = true
             },
-        })
-    end
+            { 'williamboman/mason-lspconfig.nvim' },
+
+            -- Useful status updates for LSP
+            -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
+            {
+                "j-hui/fidget.nvim",
+                opts = {
+                    notification = {
+                        window = {
+                            winblend = 0
+                        }
+                    }
+                },
+            },
+            -- Additional lua configuration, makes nvim stuff amazing!
+            { 'folke/neodev.nvim',                opts = {} },
+
+        },
+        opts = {
+            servers = {
+                lua_ls = {
+                    Lua = {
+                        completion = {
+                            callSnippet = "Replace"
+                        },
+                        workspace = { checkThirdParty = false },
+                        telemetry = { enable = false },
+                    },
+                },
+                gopls = {
+                    gofumpt = true,
+                    codelenses = {
+                        gc_details = false,
+                        generate = true,
+                        regenerate_cgo = true,
+                        run_govulncheck = true,
+                        test = true,
+                        tidy = true,
+                        upgrade_dependency = true,
+                        vendor = true,
+                    },
+                    hints = {
+                        assignVariableTypes = true,
+                        compositeLiteralFields = true,
+                        compositeLiteralTypes = true,
+                        constantValues = true,
+                        functionTypeParameters = true,
+                        parameterNames = true,
+                        rangeVariableTypes = true,
+                    },
+                    analyses = {
+                        fieldalignment = true,
+                        nilness = true,
+                        unusedparams = true,
+                        unusedwrite = true,
+                        useany = true,
+                    },
+                    usePlaceholders = true,
+                    completeUnimported = true,
+                    staticcheck = true,
+                    directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+                    semanticTokens = true,
+                },
+                templ = {
+                    filetypes = { "templ" }
+                },
+                rust_analyzer = {
+                    cargo = {
+                        allFeatures = true,
+                        loadOutDirsFromCheck = true,
+                        runBuildScripts = true,
+                    },
+                    -- Add clippy lints for Rust.
+                    checkOnSave = {
+                        allFeatures = true,
+                        command = "clippy",
+                        extraArgs = { "--no-deps" },
+                    },
+                    procMacro = {
+                        enable = true,
+                        ignored = {
+                            ["async-trait"] = { "async_trait" },
+                            ["napi-derive"] = { "napi" },
+                            ["async-recursion"] = { "async_recursion" },
+                        },
+                    },
+                    excludeDirs = {
+                        "_build",
+                        ".dart_tool",
+                        ".flatpak-builder",
+                        ".git",
+                        ".gitlab",
+                        ".gitlab-ci",
+                        ".gradle",
+                        ".idea",
+                        ".next",
+                        ".project",
+                        ".scannerwork",
+                        ".settings",
+                        ".venv",
+                        "archetype-resources",
+                        "bin",
+                        "hooks",
+                        "node_modules",
+                        "po",
+                        "screenshots",
+                        "target"
+                    }
+                },
+                tsserver = {},
+                htmx = {},
+                html = { filetypes = { 'html', 'twig', 'hbs' } },
+                jdtls = {}
+            }
+
+        },
+        config = function(_, opts)
+            require('which-key').register({
+                ['<leader>c'] = { name = 'Code', _ = 'which_key_ignore' },
+                ['<leader>d'] = { name = 'Document', _ = 'which_key_ignore' },
+                ['<leader>w'] = { name = 'Workspace', _ = 'which_key_ignore' },
+                ['<leader>r'] = { name = 'Refactor', _ = 'which_key_ignore' },
+                ['<leader>x'] = { name = 'Quickfix', _ = 'which_key_ignore' },
+            })
+
+            local servers = opts.servers
+            -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+            -- Ensure the servers above are installed
+            require('mason-lspconfig').setup({
+                ensure_installed = vim.tbl_keys(servers),
+                handlers = {
+                    function(server_name)
+                        if server_name == 'jdtls' then
+                            return
+                        end
+                        local config = {
+                            capabilities = capabilities,
+                            on_attach = on_attach,
+                            settings = servers[server_name],
+                            filetypes = (servers[server_name] or {}).filetypes,
+                        }
+                        require('lspconfig')[server_name].setup(config)
+                    end,
+                },
+            })
+        end
+    }
 }

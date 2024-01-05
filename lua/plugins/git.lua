@@ -16,14 +16,11 @@ return {
         },
         dependencies = {
             "nvim-lua/plenary.nvim",
-            {
-                "nvim-telescope/telescope.nvim",
-                config = function()
-                    require("telescope").load_extension("git_worktree")
-                end,
-            },
+            "nvim-telescope/telescope.nvim",
         },
         config = function()
+            require("telescope").load_extension("git_worktree")
+
             local Job = require("plenary.job")
             local Worktree = require("git-worktree")
 
