@@ -44,7 +44,11 @@ return {
     {
         'folke/tokyonight.nvim',
         lazy = true,
-        opts = { style = 'night' },
+        opts = { style = 'night', transparent = true },
+        config = function(_, opts)
+            require('tokyonight').setup(opts)
+            vim.cmd.colorscheme 'tokyonight'
+        end,
     },
 
     {
@@ -52,11 +56,14 @@ return {
         lazy = true,
         name = 'rose-pine',
         opts = {
-            groups = {
-                background = "#111000"
-            }
+            styles = {
+                transparency = true,
+            },
         },
-        config = true,
+        config = function(_, opts)
+            require('rose-pine').setup(opts)
+            vim.cmd.colorscheme 'rose-pine'
+        end,
     },
 
 }

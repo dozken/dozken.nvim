@@ -156,12 +156,12 @@ return {
             local lspkind = require "lspkind"
             return {
                 window = {
-                    completion = { -- rounded border; thin-style scrollbar
-                        border = 'rounded',
-                    },
-                    documentation = { -- no border; native-style scrollbar
-                        border = 'rounded',
-                    },
+                    -- completion = { -- rounded border; thin-style scrollbar
+                    --     border = 'rounded',
+                    -- },
+                    -- documentation = { -- no border; native-style scrollbar
+                    --     border = 'rounded',
+                    -- },
                 },
                 preselect = 'item',
                 ---@diagnostic disable-next-line: missing-fields
