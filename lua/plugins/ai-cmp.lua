@@ -1,4 +1,21 @@
 return {
+    -- GPT
+    {
+        "jackMort/ChatGPT.nvim",
+        enabled = false,
+        event = "VeryLazy",
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            "nvim-lua/plenary.nvim",
+            "folke/trouble.nvim",
+            "nvim-telescope/telescope.nvim"
+        },
+        config = function()
+            require("chatgpt").setup({
+                api_key_cmd = 'echo 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'
+            })
+        end,
+    },
     -- TabNine
     {
         'tzachar/cmp-tabnine',
