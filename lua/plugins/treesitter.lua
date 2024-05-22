@@ -44,7 +44,7 @@ return {
                     "prisma",
                     "markdown",
                     "markdown_inline",
-                    "svelte",
+                    -- "svelte",
                     "bash",
                     "dockerfile",
                     "gitignore",
