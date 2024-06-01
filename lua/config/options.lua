@@ -56,9 +56,9 @@ vim.o.shiftwidth = 4     -- 2 spaces for indent width
 vim.o.expandtab = true   -- expand tab to spaces
 vim.o.autoindent = true  -- copy indent from current line when starting new one
 vim.o.smartindent = true -- Insert indents automaticall                                    y
-vim.api.nvim_win_set_option(0, 'colorcolumn', '81')
-vim.cmd([[highlight ColorColumn ctermbg=NONE guibg=NONE]])
-vim.cmd([[match ColorColumn /\%>81v.\+/]])
+-- vim.api.nvim_win_set_option(0, 'colorcolumn', '81')
+-- vim.cmd([[highlight ColorColumn ctermbg=NONE guibg=NONE]])
+-- vim.cmd([[match ColorColumn /\%>81v.\+/]])
 
 
 -- Fix markdown indentation settings
@@ -75,3 +75,8 @@ vim.filetype.add({
         templ = "templ",
     },
 })
+
+
+-- Wa to wa
+vim.api.nvim_create_user_command('Wa', 'wa', {})
+vim.api.nvim_create_user_command('WA', 'wa', {})

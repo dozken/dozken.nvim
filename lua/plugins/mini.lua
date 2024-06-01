@@ -7,6 +7,7 @@ return {
     -- },
     {
         'echasnovski/mini.comment',
+        enabled=false,
         version = '*',
         event = { "BufReadPost", "BufNewFile", "BufWritePre" },
         config = true,

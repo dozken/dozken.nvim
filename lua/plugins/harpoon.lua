@@ -9,7 +9,7 @@ return {
             { "<A-j>",      function() harpoon:list():select(2) end },
             { "<A-k>",      function() harpoon:list():select(3) end },
             { "<A-l>",      function() harpoon:list():select(3) end },
-            { "<leader>ha", function() harpoon:list():append() end,                     desc = "Harpoon Add file" },
+            { "<leader>ha", function() harpoon:list():add() end,                     desc = "Harpoon Add file" },
             { "<leader>hp", function() harpoon:list():next() end,                       desc = "Harpoon Prev" },
             { "<leader>hn", function() harpoon:list():prev() end,                       desc = "Harpoon Next" },
             { "<leader>hm", '<cmd>Telescope harpoon marks<cr>',                         desc = "Harpoon Marks" },
