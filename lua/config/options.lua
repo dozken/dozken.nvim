@@ -15,14 +15,14 @@ vim.wo.number = true
 vim.wo.relativenumber = true
 
 -- Enable mouse mode
-vim.o.mouse = "a"
+vim.o.mouse = 'a'
 -- Enable auto write
 vim.o.autowrite = true
 
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help "clipboard"`
-vim.o.clipboard = "unnamedplus"
+vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -37,29 +37,28 @@ vim.o.smartcase = true
 vim.o.cursorline = true -- highlight the current cursor line
 
 -- Keep signcolumn on by default
-vim.wo.signcolumn = "yes"
+vim.wo.signcolumn = 'yes'
 
 -- Decrease update time
 vim.o.updatetime = 200
 vim.o.timeoutlen = 300
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = "menuone,noselect"
+vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 vim.o.showmode = false
 
 -- tabs & indentation
-vim.o.tabstop = 4        -- 2 spaces for tabs (prettier default)
-vim.o.shiftwidth = 4     -- 2 spaces for indent width
-vim.o.expandtab = true   -- expand tab to spaces
-vim.o.autoindent = true  -- copy indent from current line when starting new one
+vim.o.tabstop = 4 -- 2 spaces for tabs (prettier default)
+vim.o.shiftwidth = 4 -- 2 spaces for indent width
+vim.o.expandtab = true -- expand tab to spaces
+vim.o.autoindent = true -- copy indent from current line when starting new one
 vim.o.smartindent = true -- Insert indents automaticall                                    y
 -- vim.api.nvim_win_set_option(0, 'colorcolumn', '81')
 -- vim.cmd([[highlight ColorColumn ctermbg=NONE guibg=NONE]])
 -- vim.cmd([[match ColorColumn /\%>81v.\+/]])
-
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
@@ -67,16 +66,14 @@ vim.g.markdown_recommended_style = 0
 -- vim.opt.splitkeep = "sceen"
 -- vim.opt.shortmess:append({ C = true })
 
-
-
 --go templ file
-vim.filetype.add({
-    extension = {
-        templ = "templ",
-    },
-})
-
+vim.filetype.add {
+  extension = {
+    templ = 'templ',
+  },
+}
 
 -- Wa to wa
 vim.api.nvim_create_user_command('Wa', 'wa', {})
 vim.api.nvim_create_user_command('WA', 'wa', {})
+vim.api.nvim_create_user_command('W', 'w', {})
