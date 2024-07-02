@@ -77,6 +77,8 @@ return {
               ['if'] = '@function.inner',
               ['ac'] = '@class.outer',
               ['ic'] = '@class.inner',
+              ['ad'] = '@conditional.outer',
+              ['id'] = '@conditional.inner',
             },
           },
           move = {

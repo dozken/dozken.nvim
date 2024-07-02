@@ -2,7 +2,8 @@ return {
   -- Codeium
   {
     'Exafunction/codeium.nvim',
-    event = { 'BufRead', 'BufNewFile' },
+    lazy = true,
+    -- event = { 'BufRead', 'BufNewFile' },
     dependencies = {
       'hrsh7th/nvim-cmp',
       'onsails/lspkind.nvim',

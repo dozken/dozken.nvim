@@ -33,6 +33,7 @@ return {
 
   {
     'ellisonleao/gruvbox.nvim',
+    enabled = false,
     lazy = true,
     opts = {
       transparent_mode = true,
@@ -52,6 +53,7 @@ return {
 
   {
     'rose-pine/neovim',
+    enabled = false,
     lazy = true,
     name = 'rose-pine',
     opts = {

@@ -87,6 +87,7 @@ return {
   {
     'tpope/vim-fugitive',
     cmd = 'Git',
+    enabled = false,
   },
 
   -- 'tpope/vim-rhubarb',
@@ -97,6 +98,7 @@ return {
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
+    enabled = false,
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
     opts = {
       -- See `:help gitsigns.txt`

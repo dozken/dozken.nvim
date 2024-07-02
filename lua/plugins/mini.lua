@@ -46,6 +46,7 @@ return {
     --         end,
     --     })
     -- end,
+    config = true,
   },
 
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
@@ -55,27 +56,26 @@ return {
     opts = {
       n_lines = 500,
     },
+    config = true,
   },
-  {
-    'mini.surround',
-  },
+  { 'echasnovski/mini.surround', version = '*', event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' }, config = true },
   {
     'echasnovski/mini.hipatterns',
     enabled = false,
     version = '*',
     event = { 'BufReadPost', 'BufNewFile', 'BufWritePre' },
-    opts = {
-      highlighters = {
-        -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-        fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
-        hack = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
-        todo = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
-        note = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
-        text = { pattern = '%f[%w]()TEXT()%f[%W]', group = 'MiniHipatternsText' },
-
-        -- Highlight hex color strings (`#rrggbb`) using that color
-        -- hex_color = hipatterns.gen_highlighter.hex_color(),
-      },
-    },
+    -- opts = {
+    --   highlighters = {
+    --     -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+    --     fixme = { pattern = '%f[%w]()FIXME()%f[%W]', group = 'MiniHipatternsFixme' },
+    --     hack = { pattern = '%f[%w]()HACK()%f[%W]', group = 'MiniHipatternsHack' },
+    --     todo = { pattern = '%f[%w]()TODO()%f[%W]', group = 'MiniHipatternsTodo' },
+    --     note = { pattern = '%f[%w]()NOTE()%f[%W]', group = 'MiniHipatternsNote' },
+    --     text = { pattern = '%f[%w]()TEXT()%f[%W]', group = 'MiniHipatternsText' },
+    --
+    --     -- Highlight hex color strings (`#rrggbb`) using that color
+    --     -- hex_color = hipatterns.gen_highlighter.hex_color(),
+    --   },
+    -- },
   },
 }

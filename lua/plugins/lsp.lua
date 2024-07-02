@@ -1,6 +1,9 @@
 return { -- LSP Configuration & Plugins
   'neovim/nvim-lspconfig',
+  event = { 'BufRead', 'BufNewFile' },
   dependencies = {
+    -- 'mfussenegger/nvim-lint',
+    -- 'rshkarin/mason-nvim-lint',
     -- Automatically install LSPs and related tools to stdpath for Neovim
     { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
     'williamboman/mason-lspconfig.nvim',
@@ -156,7 +159,39 @@ return { -- LSP Configuration & Plugins
     --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     local servers = {
       -- clangd = {},
-      gopls = {},
+      gopls = {
+        gofumpt = true,
+        codelenses = {
+          generate = true,
+          regenerate_cgo = true,
+          run_govulncheck = true,
+          test = true,
+          tidy = true,
+          upgrade_dependency = true,
+          vendor = true,
+        },
+        hints = {
+          assignVariableTypes = true,
+          compositeLiteralFields = true,
+          compositeLiteralTypes = true,
+          constantValues = true,
+          functionTypeParameters = true,
+          parameterNames = true,
+          rangeVariableTypes = true,
+        },
+        analyses = {
+          fieldalignment = true,
+          nilness = true,
+          unusedparams = true,
+          unusedwrite = true,
+          useany = true,
+        },
+        usePlaceholders = true,
+        completeUnimported = true,
+        staticcheck = true,
+        directoryFilters = { '-.git', '-.vscode', '-.idea', '-.vscode-test', '-node_modules' },
+        semanticTokens = true,
+      },
 
       templ = { filetypes = { 'templ' } },
       -- pyright = {},
@@ -205,6 +240,7 @@ return { -- LSP Configuration & Plugins
       'stylua', -- Used to format Lua code
     })
     require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+    -- require('mason-nvim-lint').setup()
 
     require('mason-lspconfig').setup {
       handlers = {
